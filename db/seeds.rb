@@ -49,6 +49,11 @@ p3 = Project.create(
   end_date: Date.new(2022, 11, 1),
 )
 
+# Tasks
+t1 = Task.create(name: "Defind project scope", completion: false, start_date: Date.new(2022, 8, 1), end_date: Date.new(2022, 9, 1), category: "Research and Discovery")
+t2 = Task.create(name: "Conduct Stakeholder Interviews", completion: false, start_date: Date.new(2022, 8, 12), end_date: Date.new(2022, 9, 5), category: "Research and Discovery")
+t3 = Task.create(name: "scope fina", completion: false, start_date: Date.new(2022, 8, 1), end_date: Date.new(2022, 9, 1), category: "Research and Discovery")
+
 
 
 
@@ -60,6 +65,22 @@ p3 = Project.create(
   )
 end
 
+#ProjectTask
+5.times do 
+  ProjectTask.create(
+    project_id: Project.all.sample.id,
+    task_id: Task.all.sample.id,
+  )
+end
 
+#Issue
+10.times do 
+  Issue.create(
+    issue_details: Faker::Job.key_skill,
+    resolved: false,
+    user_id: User.all.sample.id,
+    task_id: Task.all.sample.id,
+  )
+end
 
 puts("Seed done")
