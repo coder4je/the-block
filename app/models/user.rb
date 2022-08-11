@@ -4,4 +4,8 @@ class User < ApplicationRecord
 
   has_many :issues
   has_many :tasks, through: :issues
+
+  has_secure_password
+
+  validates :email, presence: true, uniqueness: true
 end

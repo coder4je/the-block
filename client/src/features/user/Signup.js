@@ -90,7 +90,12 @@ function Signup() {
         </div>
       </div>
       <div className="footer">
-        <button type="submit" className="submit_btn">
+        <button
+          type="submit"
+          className="submit_btn"
+          onSubmit={handleSubmit(onSubmit)}
+          method="POST"
+        >
           Register
         </button>
       </div>
