@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding-left: 12%;
 }
 
 code {
@@ -26,4 +27,27 @@ code {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+/* LOGIN */
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
+}
+
+/* SIGNUP */
+.signup {
+  display: block;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 200px;
+}
+.signup-form {
+  display: inline-block;
+
+  text-align: left;
 }
