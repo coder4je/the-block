@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { FieldDatePicker } from "../../components/FieldDatePicker";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { createProject } from "./projectsActions";
 
 function ProjectForm() {
   const { handleSubmit, register } = useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   const onSubmit = (data) => {
-    console.log(data);
+    dispatch(createProject(data));
   };
 
   return (
@@ -32,14 +36,27 @@ function ProjectForm() {
             placeholder="Project Description"
             {...register("description")}
           />
-          <label className="project-form-label">Start Date</label>
-          <FieldDatePicker
-            // component={FieldDatePicker}
-            className="project-form-start-date"
-            name="date_till"
-            placeholder="YYYY/MM/DD"
-            {...register("name")}
-          />
+          <div style={{ display: "flex" }}>
+            <DatePicker
+              placeholderText="Select Start Date"
+              selected={startDate}
+              selectsStart
+              format="MM/dd/yyyy"
+              startDate={startDate}
+              endDate={endDate}
+              onChange={(date) => setStartDate(date)}
+            />
+            <DatePicker
+              placeholderText="Select End Date"
+              selected={endDate}
+              selectsEnd
+              startDate={startDate}
+              endDate={endDate}
+              minDate={startDate}
+              onChange={(date) => setEndDate(date)}
+            />
+          </div>
+          <input type="submit" />
         </div>
       </form>
     </div>

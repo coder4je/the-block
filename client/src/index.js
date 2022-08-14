@@ -15,8 +15,8 @@ const container = document.getElementById("root");
 const root = createRoot(container);
 
 root.render(
-  <Provider store={store}>
-    <BrowserRouter>
+  <BrowserRouter>
+    <Provider store={store}>
       <App />
       <Routes>
         <Route exact path="/" element={<Welcome />} />
@@ -24,8 +24,8 @@ root.render(
         <Route path="/login" element={<Login />} />
         <Route path="/project" element={<ProjectForm />} />
       </Routes>
-    </BrowserRouter>
-  </Provider>
+    </Provider>
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function
