@@ -1,20 +1,40 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { createProject } from "./projectsActions";
+import { createProject } from "./projectReducer";
 
 function ProjectForm() {
-  const { handleSubmit, register } = useForm();
+  const {
+    handleSubmit,
+    register,
+    control,
+    formState: { errors },
+  } = useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
-  const onSubmit = (data) => {
-    dispatch(createProject(data));
+  const [date, setDate] = useState({
+    start_date: "",
+    end_date: "",
+  });
+
+  console.log(startDate);
+  console.log(endDate);
+
+  const onSubmit = (e) => {
+    const sendingData = {
+      name: e.name,
+      description: e.description,
+      start_date: startDate,
+      end_date: endDate,
+    };
+    console.log(sendingData);
+    dispatch(createProject(sendingData));
   };
 
   return (
@@ -36,26 +56,41 @@ function ProjectForm() {
             placeholder="Project Description"
             {...register("description")}
           />
-          <div style={{ display: "flex" }}>
-            <DatePicker
-              placeholderText="Select Start Date"
-              selected={startDate}
-              selectsStart
-              format="MM/dd/yyyy"
-              startDate={startDate}
-              endDate={endDate}
-              onChange={(date) => setStartDate(date)}
-            />
-            <DatePicker
-              placeholderText="Select End Date"
-              selected={endDate}
-              selectsEnd
-              startDate={startDate}
-              endDate={endDate}
-              minDate={startDate}
-              onChange={(date) => setEndDate(date)}
-            />
-          </div>
+          <Controller
+            name="Start Date"
+            control={control}
+            render={({ field }) => (
+              <DatePicker
+                placeholderText="Select Start Date"
+                selected={field.value}
+                selectsStart
+                format="MM/dd/yyyy"
+                onChange={(date) => {
+                  setStartDate(date);
+                  field.onChange(date);
+                }}
+                rules={{ required: true }}
+              />
+            )}
+          />
+          <Controller
+            name="End Date"
+            control={control}
+            render={({ field }) => (
+              <DatePicker
+                placeholderText="Select End Date"
+                selected={field.value}
+                selectsEnd
+                format="MM/dd/yyyy"
+                onChange={(date) => {
+                  setEndDate(date);
+                  field.onChange(date);
+                }}
+                rules={{ required: true }}
+              />
+            )}
+          />
+          {errors.dateInput && <span>This field is required</span>}
           <input type="submit" />
         </div>
       </form>

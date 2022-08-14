@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: %i[ show update destroy ]
-  skip_before_action :authorized_user
+  skip_before_action :authorized_user, only: [:index, :show, :create]
   
   # GET /projects
   def index
@@ -16,13 +16,8 @@ class ProjectsController < ApplicationController
 
   # POST /projects
   def create
-    @project = Project.new(project_params)
-
-    if @project.save
-      render json: @project, status: :created, location: @project
-    else
-      render json: @project.errors, status: :unprocessable_entity
-    end
+    project = Project.create!(project_params)
+    render json: project, status: :created
   end
 
   # PATCH/PUT /projects/1
@@ -47,6 +42,6 @@ class ProjectsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def project_params
-      params.require(:project).permit(:name, :description, :start_date, :end_date)
+      params.permit(:name, :description, :start_date, :end_date)
     end
 end
