@@ -1,51 +1,43 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const createProject = createAsyncThunk(
-  "projects/createProject",
-  async ({ name, description, start_date, end_date }, thunkAPI) => {
-    try {
-      const res = await fetch("/projects", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          description,
-          start_date,
-          end_date,
-        }),
+export function createProject({ name, description, start_date, end_date }) {
+  return function (dispatch) {
+    fetch("/projects", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        description,
+        start_date,
+        end_date,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        dispatch({
+          type: "projects/projectAdded",
+          payload: data,
+        });
       });
-      let data = await res.json();
-      console.log("data", data);
-    } catch (err) {
-      console.log("Error", err.response.data);
-      return thunkAPI.rejectWithValue(err.response.data);
-    }
-  }
-);
+  };
+}
 
-export const retrieveProjects = createAsyncThunk(
-  "projects/retrieveProjects",
-  async (thunkAPI) => {
-    try {
-      const res = await fetch("/projects", {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
+export function retrieveProjects() {
+  return function (dispatch) {
+    dispatch({ type: "projects/retrieveProjects/pending" });
+    fetch("/projects")
+      .then((res) => res.json())
+      .then((data) => {
+        dispatch({
+          type: "projects/retrieveProjects/fulfilled",
+          payload: data,
+        });
       });
-      let data = await res.json();
-      console.log("data", data, res.status);
-      return { ...data };
-    } catch (err) {
-      console.log("Error", err.res.data);
-      return thunkAPI.rejectWithValue(err.res.data);
-    }
-  }
-);
+  };
+}
 
 export const updateProject = createAsyncThunk(
   "projects/updateProject",
@@ -87,19 +79,14 @@ export const deleteProject = createAsyncThunk(
   }
 );
 
-const initialState = {
-  name: "",
-  description: "",
-  start_date: "",
-  end_date: "",
-};
+const initialState = [];
 
 export default function projectReducer(projects = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-    case createProject:
+    case "projects/projectAdded":
       return [...projects, payload];
-    case retrieveProjects:
+    case "projects/retrieveProjects/fulfilled":
       return payload;
     case updateProject:
       return projects.map((project) => {

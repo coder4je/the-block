@@ -1,18 +1,15 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { loginUser } from "./userSlice";
+// import { loginUser } from "./userSlice";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 
 function Login() {
   const { handleSubmit, register } = useForm();
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    dispatch(loginUser(data));
-    navigate("/");
+    // dispatch(loginUser(data));
   };
 
   return (

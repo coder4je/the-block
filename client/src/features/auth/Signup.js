@@ -9,9 +9,9 @@ function Signup() {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = (data) => {
-    dispatch(signupUser(data));
-    navigate("/");
+  const onSubmit = (data, navigate) => {
+    dispatch(signupUser(data, navigate));
+    // navigate("/welcome");
   };
 
   return (

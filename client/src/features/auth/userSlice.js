@@ -1,71 +1,168 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const signupUser = createAsyncThunk(
-  "user/signupUser",
-  async ({ username, email, password, phone_number, picture }) => {
-    try {
-      const response = await fetch("http://localhost:3000/api/signup", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          email,
-          password,
-          phone_number,
-          picture,
-        }),
-      });
-      let data = await response.json();
-      console.log("data", data);
-    } catch (e) {
-      console.log("Error", e.response.data);
-    }
+export function signupUser({
+  username,
+  email,
+  password,
+  phone_number,
+  picture,
+}) {
+  return function (dispatch) {
+    dispatch({ type: "user/signup/pending" });
+    fetch("/api/signup", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        email,
+        password,
+        phone_number,
+        picture,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) =>
+        dispatch({
+          type: "user/signup/fulfilled",
+          payload: data,
+        })
+      );
+  };
+}
+// export const signupUser = createAsyncThunk(
+//   "user/signup",
+//   async (
+//     { username, email, password, phone_number, picture },
+//     // thunkAPI
+//     // navigate
+//     dispatch
+//   ) => {
+//     try {
+//       const response = await fetch("/api/signup", {
+//         method: "POST",
+//         headers: {
+//           Accept: "application/json",
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({
+//           username,
+//           email,
+//           password,
+//           phone_number,
+//           picture,
+//         }),
+//       });
+//       let data = await response.json();
+//       console.log("data", data);
+//       console.log("response", response);
+
+//       return (data) =>
+//         dispatch({
+//           type: "user/signup/fulfilled",
+//           payload: data,
+//         });
+
+//       if (response.status >= 200 || response.status < 300) {
+//         // navigate("/welcome");
+//         return {
+//           ...data,
+//           username: username,
+//           email: email,
+//           password: password,
+//           phone_number: phone_number,
+//           picture: picture,
+//         };
+//       } else {
+//         return thunkAPI.rejectWithValue(data);
+//       }
+//     } catch (e) {
+//       console.log("Error", e.response.data);
+//       // navigate("/signup");
+//     }
+//   }
+// );
+
+// export const loginUser = createAsyncThunk(
+//   "user/login",
+//   async ({ email, password }, thunkAPI, navigate) => {
+//     try {
+//       const response = await fetch("/api/login", {
+//         method: "POST",
+//         headers: {
+//           Accept: "application/json",
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({
+//           email,
+//           password,
+//         }),
+//       });
+//       let data = await response.json();
+
+//       console.log("data", data);
+
+//       if (response.status >= 200 || response.status < 300) {
+//         // navigate("/welcome");
+//         return { ...data, email: email };
+//       } else {
+//         return thunkAPI.rejectWithValue(data);
+//       }
+//     } catch (e) {
+//       console.log("Error", e.response.data);
+//     }
+//   }
+// );
+
+// export const userSlice = createSlice({
+//   name: "user",
+//   initialState: {
+//     username: "",
+//     email: "",
+//     password: "",
+//     phone_number: "",
+//     picture: "",
+//   },
+//   reducers: {
+//     signup: (state, action) => {
+//       state.user = action.payload;
+//     },
+//     login: (state, action) => {
+//       state.user = action.payload;
+//     },
+//     logout: (state) => {
+//       state.user = null;
+//     },
+//   },
+// });
+
+// export const { login, logout, signup } = userSlice.actions;
+
+// export const selectUser = (state) => state.user;
+
+// export default userSlice.reducer;
+
+const initialState = {
+  username: "",
+  email: "",
+  password: "",
+  phone_number: "",
+  picture: "",
+};
+function userReducer(state = initialState, action) {
+  const { type, payload } = action;
+  switch (type) {
+    case "user/signup/fulfilled":
+      return {
+        ...state,
+        payload,
+      };
+    default:
+      return state;
   }
-);
-
-export const loginUser = createAsyncThunk(
-  "user/login",
-  async ({ email, password }) => {
-    try {
-      const response = await fetch("http://localhost:3000/api/login", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-      let data = await response.json();
-      console.log("response", data);
-    } catch (e) {
-      console.log("Error", e.response.data);
-    }
-  }
-);
-
-export const userSlice = createSlice({
-  name: "user",
-  initialState: {
-    user: null,
-  },
-  reducers: {
-    login: (state, action) => {
-      state.user = action.payload;
-    },
-    logout: (state) => {
-      state.user = null;
-    },
-  },
-});
-
-export const { login, logout } = userSlice.actions;
-
+}
 export const selectUser = (state) => state.user;
 
-export default userSlice.reducer;
+export default userReducer;

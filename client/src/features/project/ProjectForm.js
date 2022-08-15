@@ -7,24 +7,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import { createProject } from "./projectReducer";
 
 function ProjectForm() {
-  const {
-    handleSubmit,
-    register,
-    control,
-    formState: { errors },
-  } = useForm();
+  const { handleSubmit, register, control } = useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-
-  const [date, setDate] = useState({
-    start_date: "",
-    end_date: "",
-  });
-
-  console.log(startDate);
-  console.log(endDate);
 
   const onSubmit = (e) => {
     const sendingData = {
@@ -90,7 +77,6 @@ function ProjectForm() {
               />
             )}
           />
-          {errors.dateInput && <span>This field is required</span>}
           <input type="submit" />
         </div>
       </form>
