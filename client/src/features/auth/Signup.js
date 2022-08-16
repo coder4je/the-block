@@ -1,17 +1,17 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
 import { signupUser } from "./userSlice";
-import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate = useNavigate(true);
+  const newUser = useSelector((state) => state.user.payload);
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = (data, navigate) => {
-    dispatch(signupUser(data, navigate));
-    // navigate("/welcome");
+  const onSubmit = (data) => {
+    dispatch(signupUser(data));
   };
 
   return (
@@ -39,6 +39,7 @@ function Signup() {
         <input placeholder="Img URL" {...register("picture")} />
         <input type="submit" />
       </form>
+      {newUser ? navigate("/welcome") : null}
     </div>
   );
 }

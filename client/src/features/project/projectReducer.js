@@ -1,7 +1,6 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-
 export function createProject({ name, description, start_date, end_date }) {
   return function (dispatch) {
+    dispatch({ type: "projects/createProject/pending" });
     fetch("/projects", {
       method: "POST",
       headers: {
@@ -16,12 +15,12 @@ export function createProject({ name, description, start_date, end_date }) {
       }),
     })
       .then((res) => res.json())
-      .then((data) => {
+      .then((data) =>
         dispatch({
-          type: "projects/projectAdded",
+          type: "projects/createProject/fulfilled",
           payload: data,
-        });
-      });
+        })
+      );
   };
 }
 
@@ -39,85 +38,78 @@ export function retrieveProjects() {
   };
 }
 
-export const updateProject = createAsyncThunk(
-  "projects/updateProject",
-  async ({ id }, thunkAPI) => {
-    try {
-      const res = await fetch(`/projects/${id}`, {
-        method: "UPDATE",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-      let data = await res.json();
-      console.log("data", data, res.status);
-      return { ...data };
-    } catch (err) {
-      console.log("Error", err.res.data);
-      return thunkAPI.rejectWithValue(err.res.data);
-    }
-  }
-);
+export function updateProject({ id, name, description, start_date, end_date }) {
+  return function (dispatch) {
+    fetch(`/projects/${id}`, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        description,
+        start_date,
+        end_date,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) =>
+        dispatch({
+          type: "projects/updateProject",
+          payload: data,
+        })
+      );
+  };
+}
 
-export const deleteProject = createAsyncThunk(
-  "projects/deleteProject",
-  async ({ id }, thunkAPI) => {
-    try {
-      const res = await fetch(`/projects/${id}`, {
-        method: "DELETE",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(res.status);
-    } catch (err) {
-      console.log("Error", err.res);
-      return thunkAPI.rejectWithValue(err.res);
-    }
-  }
-);
+export function deleteProject({ id }) {
+  return function (dispatch) {
+    dispatch({ type: "projects/deleteProject" });
+    fetch(`/projects/${id}`).then((res) => res.json());
+  };
+}
+
+// export function selectedProject({ id }) {
+//   return function (dispatch) {
+//     dispatch({ type: "projects/selectedProject", payload: data });
+//   };
+// }
 
 const initialState = [];
 
-export default function projectReducer(projects = initialState, action) {
+export default function projectReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-    case "projects/projectAdded":
-      return [...projects, payload];
+    case "projects/createProject/fulfilled":
+      return { ...state, payload };
     case "projects/retrieveProjects/fulfilled":
       return payload;
-    case updateProject:
-      return projects.map((project) => {
+    case "projects/updateProject":
+      return state.map((project) => {
         if (project.id === payload.id) {
           return {
-            ...project,
+            ...state,
             ...payload,
           };
         } else {
-          return project;
+          return state;
         }
       });
-    case deleteProject:
-      return projects.filter(({ id }) => id !== payload.id);
+    case "projects/deleteProject":
+      return state.filter(({ id }) => id !== payload.id);
+
+    case "projects/selectedProject": {
+      // return state.map((project) => {
+      //   if (project.id === payload.id) {
+      //     return { ...state, project };
+      //   }
+      // });
+      console.log(state);
+      console.log(payload.id);
+      return state.filter((project) => project.id === payload.id);
+    }
     default:
-      return projects;
+      return state;
   }
 }
-
-// export const projectSlice = createSlice({
-//   name: "projects",
-//   initialState: {
-//     name: "",
-//     description: "",
-//     start_date: "",
-//     end_date: "",
-//   },
-//   reducers: {
-//     createProject: (state, action) => {
-//       console.log("payload", payload);
-//       state.projects = payload.projects;
-//     },
-//   },
-// });

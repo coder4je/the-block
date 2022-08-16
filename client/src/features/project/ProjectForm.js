@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { createProject } from "./projectReducer";
@@ -9,7 +8,6 @@ import { createProject } from "./projectReducer";
 function ProjectForm() {
   const { handleSubmit, register, control } = useForm();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
