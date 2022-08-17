@@ -4,14 +4,14 @@ Rails.application.routes.draw do
   resources :tasks
   resources :user_projects
   resources :projects
-  resources :users
+  resources :users, only: [:index, :creat, :update, :destroy]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
   # root "articles#index"
 
   post "/api/signup", to: "users#create"
-  get "/api/users", to: "users#show"
+  get "/api/authorized_user", to: "users#show"
   post "/api/login", to: "sessions#create"
   delete "/api/logout", to: "sessions#destroy"
 end

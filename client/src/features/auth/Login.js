@@ -40,7 +40,6 @@ function Login({ currentUser }) {
         <input type="submit" />
       </form>
       {currentUser ? navigate("/welcome") : null}
-      redirect
     </div>
   );
 }

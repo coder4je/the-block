@@ -1,5 +1,6 @@
 class TasksController < ApplicationController
   before_action :set_task, only: %i[ show update destroy ]
+  skip_before_action :authorized_user
 
   # GET /tasks
   def index
@@ -15,13 +16,8 @@ class TasksController < ApplicationController
 
   # POST /tasks
   def create
-    @task = Task.new(task_params)
-
-    if @task.save
-      render json: @task, status: :created, location: @task
-    else
-      render json: @task.errors, status: :unprocessable_entity
-    end
+    task = Task.create!(task_params)
+    render json: task, status: :created
   end
 
   # PATCH/PUT /tasks/1
@@ -46,6 +42,6 @@ class TasksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def task_params
-      params.require(:task).permit(:name, :completion, :start_date, :end_date)
+      params.permit(:name, :completion, :category, :start_date, :end_date)
     end
 end

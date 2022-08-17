@@ -70,12 +70,6 @@ export function deleteProject({ id }) {
   };
 }
 
-// export function selectedProject({ id }) {
-//   return function (dispatch) {
-//     dispatch({ type: "projects/selectedProject", payload: data });
-//   };
-// }
-
 const initialState = [];
 
 export default function projectReducer(state = initialState, action) {
@@ -100,14 +94,7 @@ export default function projectReducer(state = initialState, action) {
       return state.filter(({ id }) => id !== payload.id);
 
     case "projects/selectedProject": {
-      // return state.map((project) => {
-      //   if (project.id === payload.id) {
-      //     return { ...state, project };
-      //   }
-      // });
-      console.log(state);
-      console.log(payload.id);
-      return state.filter((project) => project.id === payload.id);
+      return state.filter((project) => project.id === payload);
     }
     default:
       return state;

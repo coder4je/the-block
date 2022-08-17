@@ -69,3 +69,17 @@ code {
 .project-card {
   list-style: none;
 }
+
+/* Main Page */
+.table-block {
+  /* display: inline; */
+  /* position: fixed; */
+  width: 10px;
+  height: 10px;
+  background-color: #7fcbd7;
+  margin: 5px;
+  color: #7fcbd7;
+}
+
+/* .table-block {
+} */

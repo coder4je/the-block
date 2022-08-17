@@ -9,6 +9,7 @@ import ProjectForm from "./features/project/ProjectForm";
 import Home from "./components/Home";
 import ProjectPage from "./features/project/ProjectPage";
 import { useSelector } from "react-redux";
+import TaskForm from "./features/task/TaskForm";
 
 function App() {
   const [currentUser, setCurrentUser] = useState([]);
@@ -32,6 +33,7 @@ function App() {
         <Route path="/login" element={<Login currentUser={currentUser} />} />
         <Route path="/project" element={<ProjectForm />} />
         <Route path="/project_page" element={<ProjectPage />} />
+        <Route path="/task_form" element={<TaskForm />} />
         <Route
           path="/welcome"
           element={<Welcome currentUser={currentUser} />}

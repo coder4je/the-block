@@ -1,5 +1,6 @@
 class UserProjectsController < ApplicationController
   before_action :set_user_project, only: %i[ show update destroy ]
+  skip_before_action :authorized_user
 
   # GET /user_projects
   def index

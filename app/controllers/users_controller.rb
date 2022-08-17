@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show update destroy ]  
+  before_action :set_user, only: %i[ update destroy ]  
   skip_before_action :authorized_user, only: [:index, :show, :create]
 
   # GET /api/users
@@ -7,11 +7,12 @@ class UsersController < ApplicationController
     @users = User.all
 
     render json: @users
+
   end
 
   # GET /api/users/1
   def show
-    render json: currnet_user, status: :ok
+    render json: current_user, status: :ok
   end
 
   # POST /api/users
