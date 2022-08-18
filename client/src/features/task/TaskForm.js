@@ -5,12 +5,14 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { createTask } from "./taskReducer";
 
-function TaskForm() {
+function TaskForm({ currentProject, setOpenTaskForm }) {
   const { handleSubmit, register, control } = useForm();
   const dispatch = useDispatch();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [complete, setComplete] = useState(false);
+
+  console.log(currentProject);
 
   const onSubmit = (e) => {
     const sendingData = {
@@ -19,8 +21,10 @@ function TaskForm() {
       completion: complete,
       start_date: startDate,
       end_date: endDate,
+      project_id: currentProject.id,
     };
     console.log(sendingData);
+    setOpenTaskForm(false);
     dispatch(createTask(sendingData));
   };
 

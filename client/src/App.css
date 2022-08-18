@@ -81,5 +81,7 @@ code {
   color: #7fcbd7;
 }
 
-/* .table-block {
-} */
+.table-first-column {
+  white-space: nowrap;
+  width: 10px;
+}

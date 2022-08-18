@@ -4,9 +4,10 @@ export function createTask({
   completion,
   start_date,
   end_date,
+  project_id,
 }) {
   return function (dispatch) {
-    dispatch({ type: "projects/createTask/pending" });
+    dispatch({ type: "tasks/createTask/pending" });
     fetch("/tasks", {
       method: "POST",
       headers: {
@@ -19,12 +20,13 @@ export function createTask({
         completion,
         start_date,
         end_date,
+        project_id,
       }),
     })
       .then((res) => res.json())
       .then((data) =>
         dispatch({
-          type: "projects/createTask/fulfilled",
+          type: "tasks/createTask/fulfilled",
           payload: data,
         })
       );
@@ -33,12 +35,12 @@ export function createTask({
 
 export function getProjects() {
   return function (dispatch) {
-    dispatch({ type: "projects/getTasks/pending" });
+    dispatch({ type: "tasks/getTasks/pending" });
     fetch("/tasks")
       .then((res) => res.json())
       .then((data) => {
         dispatch({
-          type: "projects/getTasks/fulfilled",
+          type: "tasks/getTasks/fulfilled",
           payload: data,
         });
       });
@@ -50,7 +52,7 @@ const initialState = [];
 export default function taskReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-    case "projects/createTask/fulfilled":
+    case "tasks/createTask/fulfilled":
       return { ...state, payload };
     default:
       return state;

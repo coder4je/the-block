@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
+import TaskForm from "../task/TaskForm";
+import TaskList from "../task/TaskList";
 
 function ProjectPage() {
-  const dayjs = require("dayjs");
+  const [openTaskForm, setOpenTaskForm] = useState(false);
 
   const currentProject = useSelector((state) =>
     state.projects.map((item) => item)
@@ -54,9 +56,12 @@ function ProjectPage() {
   ));
 
   // TASKS
+  const currentTask = useSelector((state) => state.tasks.payload);
+  console.log(currentTask);
 
-  // const currentTask = useSelector((state) => state.tasks.map((item) => item));
-  // console.log(currentTask);
+  function handleCreateTask() {
+    setOpenTaskForm(!openTaskForm);
+  }
 
   return (
     <>
@@ -64,14 +69,24 @@ function ProjectPage() {
       <h3>Description: {description}</h3>
       <table>
         <tbody>
-          <tr>{monthList}</tr>
           <tr>
-            <th>Task</th>
-
+            <th className="table-first-column"></th>
+            {monthList}
+          </tr>
+          <tr>
+            <th className="table-first-column">Task</th>
             {listItems}
           </tr>
+          {currentTask ? <TaskList currentTask={currentTask} /> : null}
         </tbody>
       </table>
+      <button onClick={handleCreateTask}>+</button>
+      {openTaskForm ? (
+        <TaskForm
+          currentProject={currentProject}
+          setOpenTaskForm={setOpenTaskForm}
+        />
+      ) : null}
     </>
   );
 }
