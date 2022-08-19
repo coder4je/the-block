@@ -1,24 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signOutUser } from "../features/auth/userSlice";
+import { set } from "react-hook-form";
 
-function Nav() {
+function Nav({ currentUser, updateUser }) {
   const dispatch = useDispatch();
-  // const authorizedUser = useSelector((state) => state.user.payload);
-
-  // const [username, email, phone_number, picture] = authorizedUser;
-
-  // console.log(authorizedUser);
-  // useEffect(() => {
-  //   dispatch(authUser());
-  // }, [dispatch]);
+  // const [authorizerUser, setAuthorizerUser] = useState(false);
 
   const handleLogOut = () => {
     dispatch(signOutUser());
+    updateUser(!currentUser);
   };
-
-  // console.log(authorizedUser);
 
   return (
     <div className="nav">
@@ -28,17 +21,11 @@ function Nav() {
         </Link>
       </li>
       <li className="nav-item">
-        <Link to={"/home"} className="nav-about" style={{ color: "white  " }}>
+        <Link to={"/"} className="nav-about" style={{ color: "white  " }}>
           Home
         </Link>
       </li>
-      {/* {authorizedUser ? (
-        <li className="nav-item" onClick={handleLogOut}>
-          <Link to={"/"} className="nav-about" style={{ color: "white  " }}>
-            Logout
-          </Link>
-        </li>
-      ) : (
+      {!currentUser ? (
         <li className="nav-item">
           <Link
             to={"/login"}
@@ -48,7 +35,13 @@ function Nav() {
             Login
           </Link>
         </li>
-      )} */}
+      ) : (
+        <li className="nav-item" onClick={handleLogOut}>
+          <Link to={"/"} className="nav-about" style={{ color: "white  " }}>
+            Logout
+          </Link>
+        </li>
+      )}
     </div>
   );
 }

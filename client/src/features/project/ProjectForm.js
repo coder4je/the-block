@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { createProject } from "./projectReducer";
+import { useNavigate } from "react-router-dom";
 
 function ProjectForm() {
   const { handleSubmit, register, control } = useForm();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
@@ -20,7 +22,12 @@ function ProjectForm() {
     };
     console.log(sendingData);
     dispatch(createProject(sendingData));
+    navigate("/welcome");
   };
+
+  // const response = useSelector((state) => state.projects.payload);
+  // if (response) {
+  // }
 
   return (
     <div className="project">

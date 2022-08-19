@@ -1,23 +1,23 @@
-import React from "react";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { retrieveProjects } from "../features/project/projectReducer";
+import React, { useEffect } from "react";
 import ProjectList from "../features/project/ProjectList";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { authUser } from "../features/auth/userSlice";
 
 function Welcome({ currentUser }) {
-  const projects = useSelector((state) => state.projects.map((item) => item));
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // get Projects
-  useEffect(() => {
-    dispatch(retrieveProjects());
-  }, [dispatch]);
+  const dispatch = useDispatch();
 
   function handleCreateProject() {
     navigate("/project");
   }
+  useEffect(() => {
+    dispatch(authUser());
+  }, [dispatch]);
+
+  const projects = useSelector((state) => state.user.payload.projects);
+
+  console.log(projects);
 
   return (
     <div>
@@ -36,7 +36,7 @@ function Welcome({ currentUser }) {
       <button onClick={handleCreateProject}>Create Project</button>
       <div className="projects">
         <h1>Project List</h1>
-        <ProjectList projects={projects} />
+        {projects ? <ProjectList projects={projects} /> : null}
       </div>
     </div>
   );

@@ -33,7 +33,7 @@ export function createTask({
   };
 }
 
-export function getProjects() {
+export function getTasks() {
   return function (dispatch) {
     dispatch({ type: "tasks/getTasks/pending" });
     fetch("/tasks")
@@ -54,6 +54,10 @@ export default function taskReducer(state = initialState, action) {
   switch (type) {
     case "tasks/createTask/fulfilled":
       return { ...state, payload };
+    // case "tasks/getTasks":
+    //   return state.filter((task) => {
+    //     console.log(task), console.log(payload);
+    //   });
     default:
       return state;
   }

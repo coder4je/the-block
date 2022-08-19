@@ -70,6 +70,13 @@ export function deleteProject({ id }) {
   };
 }
 
+export function addProject(newProject) {
+  return {
+    type: "projects/addProject",
+    payload: newProject,
+  };
+}
+
 const initialState = [];
 
 export default function projectReducer(state = initialState, action) {
@@ -93,9 +100,10 @@ export default function projectReducer(state = initialState, action) {
     case "projects/deleteProject":
       return state.filter(({ id }) => id !== payload.id);
 
-    case "projects/selectedProject": {
-      return state.filter((project) => project.id === payload);
+    case "projects/addProject": {
+      return { ...state, payload };
     }
+
     default:
       return state;
   }

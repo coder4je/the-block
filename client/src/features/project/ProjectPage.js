@@ -3,15 +3,20 @@ import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import TaskForm from "../task/TaskForm";
 import TaskList from "../task/TaskList";
+import { useNavigate } from "react-router-dom";
 
 function ProjectPage() {
   const [openTaskForm, setOpenTaskForm] = useState(false);
+  const navigate = useNavigate();
 
-  const currentProject = useSelector((state) =>
-    state.projects.map((item) => item)
-  )[0];
+  const currentProject = useSelector((state) => state);
+  // .user.payload.projects);
 
   const { name, description, start_date, end_date } = currentProject;
+  console.log(name);
+  console.log(description);
+  console.log(start_date);
+  console.log(end_date);
 
   const startDate = new Date(start_date);
   const endDate = new Date(end_date);
@@ -40,7 +45,7 @@ function ProjectPage() {
   // console.log(dayjs(startDate).format("MMM"));
 
   const handleClick = () => {
-    console.log("hi");
+    navigate("/issue_form");
   };
 
   // Create Blocks
@@ -77,7 +82,7 @@ function ProjectPage() {
             <th className="table-first-column">Task</th>
             {listItems}
           </tr>
-          {currentTask ? <TaskList currentTask={currentTask} /> : null}
+          {/* {currentTask ? <TaskList currentTask={currentTask} /> : null} */}
         </tbody>
       </table>
       <button onClick={handleCreateTask}>+</button>

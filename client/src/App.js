@@ -8,14 +8,17 @@ import Welcome from "./components/Welcome";
 import ProjectForm from "./features/project/ProjectForm";
 import Home from "./components/Home";
 import ProjectPage from "./features/project/ProjectPage";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import TaskForm from "./features/task/TaskForm";
+import IssueForm from "./features/issue/IssueForm";
 
 function App() {
+  const dispatch = useDispatch();
   const [currentUser, setCurrentUser] = useState([]);
   console.log(currentUser);
 
   const loggedInUser = useSelector((state) => state.user.payload);
+
   useEffect(() => {
     setCurrentUser(loggedInUser);
   }, [loggedInUser]);
@@ -34,6 +37,10 @@ function App() {
         <Route path="/project" element={<ProjectForm />} />
         <Route path="/project_page" element={<ProjectPage />} />
         <Route path="/task_form" element={<TaskForm />} />
+        <Route
+          path="/issue_form"
+          element={<IssueForm currentUser={currentUser} />}
+        />
         <Route
           path="/welcome"
           element={<Welcome currentUser={currentUser} />}

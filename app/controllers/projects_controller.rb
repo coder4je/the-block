@@ -17,6 +17,7 @@ class ProjectsController < ApplicationController
   # POST /projects
   def create
     project = Project.create!(project_params)
+    UserProject.create!(project_id: project.id, user_id: session[:user_id])
     render json: project, status: :created
   end
 
@@ -39,6 +40,7 @@ class ProjectsController < ApplicationController
     def set_project
       @project = Project.find(params[:id])
     end
+
 
     # Only allow a list of trusted parameters through.
     def project_params

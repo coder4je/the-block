@@ -1,5 +1,7 @@
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[ show update destroy ]
+  skip_before_action :authorized_user, only: [:index, :show, :create]
+
 
   # GET /issues
   def index
@@ -46,6 +48,6 @@ class IssuesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def issue_params
-      params.require(:issue).permit(:issue_details, :resolved, :user_id, :task_id)
+      params.permit(:issue_details, :resolved, :user_id, :task_id)
     end
 end

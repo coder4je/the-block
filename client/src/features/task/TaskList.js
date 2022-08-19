@@ -1,40 +1,17 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
 import dayjs from "dayjs";
+import TaskDetails from "./TaskDetails";
+import { useSelector, useDispatch } from "react-redux";
 
 function TaskList({ currentTask }) {
-  const dayjs = require("dayjs");
-  const { name, completion, start_date, end_date, category } = currentTask;
+  console.log(currentTask);
+  // const taskCard = currentTask.map((task) => (
+  //   <TaskDetails key={task.id} task={task} />
+  // ));
 
-  const taskStartDate = new Date(start_date);
-  const taskEndDate = new Date(end_date);
+  const taskCard = "hi";
 
-  const taskDuration = Math.floor(
-    Math.abs(new Date(end_date) - new Date(start_date)) / (1000 * 60 * 60 * 24)
-  );
-
-  const handleClick = () => {
-    console.log("hi");
-  };
-  console.log(taskDuration);
-
-  // Create Blocks
-  const taskDays = [];
-  for (let i = 0; i < taskDuration; i++) {
-    taskDays.push(dayjs(taskStartDate).add(i, "day").format("ddd"));
-  }
-  const taskList = taskDays.map((day) => (
-    <td key={Math.random()} className="table-block" onClick={handleClick}>
-      ""
-    </td>
-  ));
-
-  return (
-    <tr>
-      <th className="table-first-column">{name}</th>
-      {taskList}
-    </tr>
-  );
+  return <tr>{taskCard}</tr>;
 }
 
 export default TaskList;

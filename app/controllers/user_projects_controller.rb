@@ -16,13 +16,9 @@ class UserProjectsController < ApplicationController
 
   # POST /user_projects
   def create
-    @user_project = UserProject.new(user_project_params)
-
-    if @user_project.save
-      render json: @user_project, status: :created, location: @user_project
-    else
-      render json: @user_project.errors, status: :unprocessable_entity
-    end
+    buybug
+    user_project = UserProject.create!(user_project_params)
+    render json: user_project, status: :created
   end
 
   # PATCH/PUT /user_projects/1
@@ -47,6 +43,6 @@ class UserProjectsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_project_params
-      params.require(:user_project).permit(:project_id, :user_id)
+      params.permit(:project_id, :user_id)
     end
 end

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :tasks
   resources :user_projects
   resources :projects
-  resources :users, only: [:index, :creat, :update, :destroy]
+  resources :users 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

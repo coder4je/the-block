@@ -12,7 +12,7 @@ class UsersController < ApplicationController
 
   # GET /api/users/1
   def show
-    render json: current_user, status: :ok
+    render json: current_user, status: :ok, serializer: UserWithProjectsSerializer
   end
 
   # POST /api/users

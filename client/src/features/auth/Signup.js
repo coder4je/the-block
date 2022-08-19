@@ -14,6 +14,13 @@ function Signup() {
     dispatch(signupUser(data));
   };
 
+  const response = useSelector((state) => state.user.payload);
+  console.log(response);
+
+  if (response) {
+    return <Navigate to="/welcome" />;
+  }
+
   return (
     <div className="signup">
       <form className="signup-form" onSubmit={handleSubmit(onSubmit)}>
@@ -39,7 +46,6 @@ function Signup() {
         <input placeholder="Img URL" {...register("picture")} />
         <input type="submit" />
       </form>
-      {newUser ? navigate("/welcome") : null}
     </div>
   );
 }
