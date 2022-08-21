@@ -2,8 +2,8 @@ class User < ApplicationRecord
   has_many :user_projects
   has_many :projects, through: :user_projects
 
-  has_many :issues
-  has_many :tasks, through: :issues
+  has_many :user_issues
+  has_many :issues, through: :user_issues
 
   has_secure_password
 

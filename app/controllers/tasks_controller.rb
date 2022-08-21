@@ -4,14 +4,18 @@ class TasksController < ApplicationController
 
   # GET /tasks
   def index
-    @tasks = Task.all
-
-    render json: @tasks
+    if params[:project_id]
+      project = find_project
+      tasks = project.tasks
+    else
+      tasks = Task.all
+    end
+    render json: tasks, include: :proejct
   end
 
   # GET /tasks/1
   def show
-    render json: @task
+    render json: @task, include: :project
   end
 
   # POST /tasks
@@ -38,6 +42,10 @@ class TasksController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_task
       @task = Task.find(params[:id])
+    end
+
+    def find_project
+      Project.find(params[:project_id])
     end
 
     # Only allow a list of trusted parameters through.

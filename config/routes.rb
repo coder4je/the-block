@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
+  resources :user_issues
   resources :issues
   resources :tasks
   resources :user_projects
-  resources :projects
+  resources :projects 
   resources :users 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

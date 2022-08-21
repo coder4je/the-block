@@ -5,25 +5,25 @@ class IssuesController < ApplicationController
 
   # GET /issues
   def index
-    @issues = Issue.all
-
-    render json: @issues
+    if params[:task_id]
+      task = find_task
+      issues = task.issues
+    else
+    issues = Issue.all
+    end
+    render json: issues, status: :ok
   end
 
   # GET /issues/1
   def show
-    render json: @issue
+    render json: @issue, status: :ok, serializer: IssueWithUsersSerializer
   end
 
   # POST /issues
   def create
-    @issue = Issue.new(issue_params)
-
-    if @issue.save
-      render json: @issue, status: :created, location: @issue
-    else
-      render json: @issue.errors, status: :unprocessable_entity
-    end
+    issue = Issue.create!(issue_params)
+    UserIssue.create!(issue_id: issue.id, user_id: session[:user_id])
+    render json: issue, status: :created
   end
 
   # PATCH/PUT /issues/1
@@ -46,8 +46,12 @@ class IssuesController < ApplicationController
       @issue = Issue.find(params[:id])
     end
 
+    def find_task
+      Task.find(params[:task_id])
+    end
+
     # Only allow a list of trusted parameters through.
     def issue_params
-      params.permit(:issue_details, :resolved, :user_id, :task_id)
+      params.permit(:issue_details, :resolved, :task_id)
     end
 end

@@ -98,7 +98,6 @@ function userReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case "user/signup/fulfilled":
-      console.log(state);
       return {
         ...state,
         payload,

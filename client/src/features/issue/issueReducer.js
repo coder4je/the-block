@@ -1,4 +1,4 @@
-export function createIssue({ issue, resolved, task_id, user_id }) {
+export function createIssue({ issue_details, resolved, task_id }) {
   return function (dispatch) {
     dispatch({ type: "issues/createIssue/pending" });
     fetch("/issues", {
@@ -8,10 +8,9 @@ export function createIssue({ issue, resolved, task_id, user_id }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        issue,
+        issue_details,
         resolved,
         task_id,
-        user_id,
       }),
     })
       .then((res) => res.json())
@@ -24,10 +23,10 @@ export function createIssue({ issue, resolved, task_id, user_id }) {
   };
 }
 
-export function getIssues() {
+export function getIssues({ id }) {
   return function (dispatch) {
     dispatch({ type: "issues/getIssues/pending" });
-    fetch("/issues")
+    fetch(`/issues/${id}`)
       .then((res) => res.json())
       .then((data) => {
         dispatch({
@@ -38,6 +37,13 @@ export function getIssues() {
   };
 }
 
+export function addIssue(newIssue) {
+  return {
+    type: "Issue/addIssue",
+    payload: newIssue,
+  };
+}
+
 const initialState = [];
 
 export default function issueReducer(state = initialState, action) {
@@ -45,6 +51,10 @@ export default function issueReducer(state = initialState, action) {
   switch (type) {
     case "issues/createIssue/fulfilled":
       return { ...state, payload };
+    case "issues/getIssues/fulfilled":
+      return payload;
+    case "Issue/addIssue":
+      return payload;
     default:
       return state;
   }

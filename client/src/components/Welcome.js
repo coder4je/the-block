@@ -17,8 +17,6 @@ function Welcome({ currentUser }) {
 
   const projects = useSelector((state) => state.user.payload.projects);
 
-  console.log(projects);
-
   return (
     <div>
       {currentUser ? (

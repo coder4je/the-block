@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { selectedTask } from "./taskReducer";
 
 function TaskList({ task }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const dayjs = require("dayjs");
   const { name, completion, start_date, end_date, category } = task;
@@ -16,18 +19,18 @@ function TaskList({ task }) {
   );
 
   const handleClick = () => {
+    dispatch(selectedTask(task));
     navigate("/issue_form");
   };
-  console.log(taskDuration);
 
   // Create Blocks
   const taskDays = [];
   for (let i = 0; i < taskDuration; i++) {
-    taskDays.push(dayjs(taskStartDate).add(i, "day").format("ddd"));
+    taskDays.push(dayjs(taskStartDate).add(i, "day").format("MM/DD/YY"));
   }
   const taskList = taskDays.map((day) => (
     <td key={Math.random()} className="table-block" onClick={handleClick}>
-      ""
+      {dayjs(day).format("DD")}
     </td>
   ));
 

@@ -20,11 +20,23 @@ function Nav({ currentUser, updateUser }) {
           About
         </Link>
       </li>
-      <li className="nav-item">
-        <Link to={"/"} className="nav-about" style={{ color: "white  " }}>
-          Home
-        </Link>
-      </li>
+      {!currentUser ? (
+        <li className="nav-item">
+          <Link to={"/"} className="nav-home" style={{ color: "white  " }}>
+            Home
+          </Link>
+        </li>
+      ) : (
+        <li className="nav-item">
+          <Link
+            to={"/welcome"}
+            className="nav-my-account"
+            style={{ color: "white  " }}
+          >
+            My Page
+          </Link>
+        </li>
+      )}
       {!currentUser ? (
         <li className="nav-item">
           <Link

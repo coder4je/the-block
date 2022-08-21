@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { createProject } from "./projectReducer";
 import { useNavigate } from "react-router-dom";
+import { addTask } from "../task/taskReducer";
 
 function ProjectForm() {
   const { handleSubmit, register, control } = useForm();
@@ -22,12 +23,8 @@ function ProjectForm() {
     };
     console.log(sendingData);
     dispatch(createProject(sendingData));
-    navigate("/welcome");
+    navigate("/project_report");
   };
-
-  // const response = useSelector((state) => state.projects.payload);
-  // if (response) {
-  // }
 
   return (
     <div className="project">

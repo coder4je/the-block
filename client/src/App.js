@@ -11,6 +11,9 @@ import ProjectPage from "./features/project/ProjectPage";
 import { useSelector, useDispatch } from "react-redux";
 import TaskForm from "./features/task/TaskForm";
 import IssueForm from "./features/issue/IssueForm";
+import ProjectReport from "./features/project/ProjectReport";
+import MemberList from "./features/issue/MemberList";
+import MemberDetails from "./features/issue/MemberDetails";
 
 function App() {
   const dispatch = useDispatch();
@@ -41,10 +44,14 @@ function App() {
           path="/issue_form"
           element={<IssueForm currentUser={currentUser} />}
         />
+        <Route path="/project_report" element={<ProjectReport />} />
+
         <Route
           path="/welcome"
           element={<Welcome currentUser={currentUser} />}
         />
+        <Route path="/member_list" element={<MemberList />} />
+        <Route path="/member_details" element={<MemberDetails />} />
       </Routes>
     </div>
   );

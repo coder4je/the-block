@@ -2,9 +2,10 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "./userSlice";
 import { useForm } from "react-hook-form";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Login({ currentUser }) {
+  const navigate = useNavigate();
   const { handleSubmit, register } = useForm();
   const dispatch = useDispatch();
 
@@ -14,9 +15,14 @@ function Login({ currentUser }) {
 
   const response = useSelector((state) => state.user.payload);
   console.log(response);
+  console.log(currentUser);
 
   if (currentUser) {
-    return <Navigate to="/welcome" />;
+    navigate("/welcome");
+  }
+
+  function handleSignup() {
+    navigate("/signup");
   }
 
   return (
@@ -42,6 +48,7 @@ function Login({ currentUser }) {
         />
         <input type="submit" />
       </form>
+      <button onClick={handleSignup}>Create Account</button>
     </div>
   );
 }

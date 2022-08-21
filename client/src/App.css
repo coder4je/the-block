@@ -78,7 +78,8 @@ code {
   height: 10px;
   background-color: #7fcbd7;
   margin: 5px;
-  color: #7fcbd7;
+  color: black;
+  /* color: #7fcbd7; */
 }
 
 .table-first-column {

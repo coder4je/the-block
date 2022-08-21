@@ -1,17 +1,20 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { createTask } from "./taskReducer";
+import { addTask, createTask, getTasks } from "./taskReducer";
+import { useNavigate, Navigate } from "react-router-dom";
 
-function TaskForm({ currentProject, setOpenTaskForm }) {
+function TaskForm() {
   const { handleSubmit, register, control } = useForm();
   const dispatch = useDispatch();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [complete, setComplete] = useState(false);
+  const navigate = useNavigate();
 
+  const currentProject = useSelector((state) => state.projects.payload);
   console.log(currentProject);
 
   const onSubmit = (e) => {
@@ -24,8 +27,8 @@ function TaskForm({ currentProject, setOpenTaskForm }) {
       project_id: currentProject.id,
     };
     console.log(sendingData);
-    setOpenTaskForm(false);
     dispatch(createTask(sendingData));
+    navigate("/project_report");
   };
 
   return (

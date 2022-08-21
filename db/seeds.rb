@@ -13,6 +13,10 @@ puts("Delete all old data")
 User.destroy_all
 UserProject.destroy_all
 Project.destroy_all
+Issue.destroy_all
+Task.destroy_all
+UserIssue.destroy_all
+UserProject.destroy_all
 
 #User
 
@@ -66,13 +70,21 @@ t3 = Task.create(name: "scope fina", completion: false, start_date: Date.new(202
 end
 
 
+
 #Issue
 10.times do 
   Issue.create(
     issue_details: Faker::Job.key_skill,
     resolved: false,
-    user_id: User.all.sample.id,
     task_id: Task.all.sample.id,
+  )
+end
+
+#UserIssue
+20.times do 
+  UserIssue.create(
+    issue_id: Issue.all.sample.id,
+    user_id: User.all.sample.id,
   )
 end
 

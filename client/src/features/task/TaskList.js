@@ -1,17 +1,19 @@
-import React, { useEffect } from "react";
-import dayjs from "dayjs";
 import TaskDetails from "./TaskDetails";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
 
-function TaskList({ currentTask }) {
-  console.log(currentTask);
-  // const taskCard = currentTask.map((task) => (
-  //   <TaskDetails key={task.id} task={task} />
-  // ));
+function TaskList({ currentProject }) {
+  const [currentTask, setCurrentTask] = useState([]);
+  useEffect(() => {
+    fetch("/tasks")
+      .then((res) => res.json())
+      .then((data) => setCurrentTask(data));
+  }, []);
 
-  const taskCard = "hi";
+  const taskCard = currentTask
+    .filter((item) => item.project_id === currentProject.id)
+    .map((task) => <TaskDetails key={task.id} task={task} />);
 
-  return <tr>{taskCard}</tr>;
+  return taskCard;
 }
 
 export default TaskList;

@@ -27,7 +27,7 @@ export function createProject({ name, description, start_date, end_date }) {
 export function retrieveProjects() {
   return function (dispatch) {
     dispatch({ type: "projects/retrieveProjects/pending" });
-    fetch("/projects")
+    fetch(`/projects/`)
       .then((res) => res.json())
       .then((data) => {
         dispatch({

@@ -18,7 +18,7 @@ function Signup() {
   console.log(response);
 
   if (response) {
-    return <Navigate to="/welcome" />;
+    navigate("/welcome");
   }
 
   return (

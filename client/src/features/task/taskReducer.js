@@ -47,6 +47,20 @@ export function getTasks() {
   };
 }
 
+export function addTask(newTask) {
+  return {
+    type: "tasks/addTask",
+    payload: newTask,
+  };
+}
+
+export function selectedTask(task) {
+  return {
+    type: "tasks/selectedTask",
+    payload: task,
+  };
+}
+
 const initialState = [];
 
 export default function taskReducer(state = initialState, action) {
@@ -54,10 +68,12 @@ export default function taskReducer(state = initialState, action) {
   switch (type) {
     case "tasks/createTask/fulfilled":
       return { ...state, payload };
-    // case "tasks/getTasks":
-    //   return state.filter((task) => {
-    //     console.log(task), console.log(payload);
-    //   });
+    case "tasks/getTasks/fulfilled":
+      return { ...state, payload };
+    case "tasks/addTask":
+      return { ...state, payload };
+    case "tasks/selectedTask":
+      return { ...state, payload };
     default:
       return state;
   }
