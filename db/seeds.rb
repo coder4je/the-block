@@ -64,6 +64,7 @@ t3 = Task.create(name: "scope fina", completion: false, start_date: Date.new(202
 #UserProject
 20.times do 
   UserProject.create(
+    member_email: Faker::Internet.email,
     project_id: Project.all.sample.id,
     user_id: User.all.sample.id,
   )
@@ -74,6 +75,7 @@ end
 #Issue
 10.times do 
   Issue.create(
+    issue_date: Faker::Date.between(from: t1.start_date, to: t1.end_date),
     issue_details: Faker::Job.key_skill,
     resolved: false,
     task_id: Task.all.sample.id,

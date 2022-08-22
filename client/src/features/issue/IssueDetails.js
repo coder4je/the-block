@@ -14,10 +14,10 @@ function IssueDetails({ issue, taskId }) {
   //     .then((data) => console.log(data));
   // }, []);
 
-  // console.log(members);
+  console.log(issue);
 
   const { issue_details } = issue;
-  return <div>{issue_details}</div>;
+  return <div className="issue-details">{issue_details}</div>;
 }
 
 export default IssueDetails;

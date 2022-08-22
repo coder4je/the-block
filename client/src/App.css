@@ -1,16 +1,32 @@
 body {
-  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding-left: 12%;
+  width: 100vw;
+  height: 100vh;
+  background: #ecf0f3;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  place-items: center;
+  overflow: hidden;
+  margin-left: 13%;
+  margin-right: 10%;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+/* home */
+
+.home-btn {
+  margin: auto;
+  width: 500px;
+  display: flex;
 }
 
 .nav {
@@ -29,45 +45,149 @@ code {
   align-items: center;
 }
 .nav-item {
+  font-size: large;
   list-style: none;
-  margin-left: 2rem;
+  margin-left: 10%;
+  padding: 20px;
   color: white;
 }
 
-/* LOGIN */
+/* LOGIN  & Signup */
 .login {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100vh;
-  align-items: center;
+  margin-top: 5%;
+  margin-left: 30%;
+  position: relative;
+  height: 600px;
+  width: 350px;
+  border-radius: 20px;
+  padding: 40px;
+  box-sizing: border-box;
+  background: #ecf0f3;
+  box-shadow: 14px 14px 20px #cdced1, -14px -14px 20px white;
 }
 
-/* SIGNUP */
 .signup {
+  margin-top: 5%;
+  margin-left: 30%;
+  position: relative;
+  height: 700px;
+  width: 350px;
+  border-radius: 20px;
+  padding: 40px;
+  box-sizing: border-box;
+  background: #ecf0f3;
+  box-shadow: 14px 14px 20px #cdced1, -14px -14px 20px white;
+}
+
+.logo {
+  font-size: 70px;
+  color: #01a7f2;
+  margin: auto;
+}
+
+.login-label,
+.login-input,
+.login-btn,
+.signup-btn {
   display: block;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-  width: 200px;
+  width: 100%;
+  padding: 0;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
 }
-.signup-form {
-  display: inline-block;
 
+.login-label {
   text-align: left;
+  margin-bottom: 4px;
 }
 
-/* project cards */
-.project-container {
+.login-label:nth-of-type(2) {
+  margin-top: 12px;
+}
+
+.login-input {
+  background: #ecf0f3;
+  padding: 10px;
+  padding-left: 20px;
+  height: 50px;
+  font-size: 14px;
+  border-radius: 50px;
+  box-shadow: inset 6px 6px 6px #cdced1, inset -6px -6px 6px white;
+}
+
+.login-btn,
+.signup-btn {
+  color: white;
+  margin-top: 30px;
+  background: #1da1f2;
+  height: 40px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 900;
+  box-shadow: 6px 6px 6px #cdced1, -6px -6px 6px white;
+  transition: 0.5s;
+}
+
+.login-btn:hover,
+.signup-btn:hover {
+  box-shadow: none;
+}
+
+.login-name {
+  top: 0;
+  left: 0;
+}
+
+/* projects */
+.welcome-container {
+  margin: auto;
+}
+.project-list-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  width: 100%;
+  width: 85%;
   height: 200px;
+  /* margin-bottom: 20px; */
+  /* padding: 10px ; */
 }
 
 .project-card {
   list-style: none;
+  margin: auto;
+  position: relative;
+  height: 200px;
+  width: 200px;
+  border-radius: 20px;
+  padding: 40px;
+  background: #1da1f2;
+  box-sizing: border-box;
+  background: #ecf0f3;
+  box-shadow: 14px 14px 20px #cdced1, -14px -14px 20px white;
+}
+
+.project-btn {
+  margin: auto;
+  display: block;
+  width: 200px;
+  padding: 10px;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+  color: white;
+  margin-top: 30px;
+  background: #1da1f2;
+  height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 900;
+  box-shadow: 6px 6px 6px #cdced1, -6px -6px 6px white;
+  transition: 0.5s;
+}
+
+.member-container {
+  margin: auto;
 }
 
 /* Main Page */
@@ -78,11 +198,153 @@ code {
   height: 10px;
   background-color: #7fcbd7;
   margin: 5px;
-  color: black;
+  color: #7fcbd7;
   /* color: #7fcbd7; */
 }
 
 .table-first-column {
   white-space: nowrap;
   width: 10px;
+}
+
+/* Project Form */
+
+.project {
+  margin-top: 5%;
+  margin-left: 30%;
+  position: relative;
+  height: 700px;
+  width: 350px;
+  border-radius: 20px;
+  padding: 40px;
+  box-sizing: border-box;
+  background: #ecf0f3;
+  box-shadow: 14px 14px 20px #cdced1, -14px -14px 20px white;
+}
+
+.project-form-label,
+.project-form-input,
+.project-form-description,
+.project-form-dayPicker,
+.project-form-btn,
+.project-form-addMember-btn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.project-form-label {
+  text-align: left;
+  margin-bottom: 4px;
+}
+
+.project-form-input:nth-of-type(2) {
+  margin-top: 12px;
+}
+
+.project-form-input {
+  background: #ecf0f3;
+  padding: 10px;
+  padding-left: 20px;
+  height: 50px;
+  font-size: 14px;
+  border-radius: 10px;
+  box-shadow: inset 6px 6px 6px #cdced1, inset -6px -6px 6px white;
+}
+/* checkbox */
+.project-form-checkbox {
+  display: block;
+  width: 20%;
+  margin: auto;
+  padding: 0;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+  background: #ecf0f3;
+  padding: 10px;
+  padding-left: 20px;
+  height: 50px;
+  font-size: 14px;
+  border-radius: 10px;
+  box-shadow: inset 6px 6px 6px #cdced1, inset -6px -6px 6px white;
+}
+.project-form-checkbox:nth-of-type(2) {
+  margin-top: 12px;
+}
+
+.project-form-dayPicker {
+  background: #7dc5f2;
+  padding: 10px;
+  padding-left: 20px;
+  height: 50px;
+  font-size: 14px;
+  border-radius: 10px;
+  box-shadow: inset 6px 6px 6px #9ea3b3, inset -6px -6px 6px #99cded;
+}
+
+.project-form-btn,
+.project-form-addMember-btn {
+  color: white;
+  margin-top: 30px;
+  background: #1da1f2;
+  height: 40px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 900;
+  box-shadow: 6px 6px 6px #cdced1, -6px -6px 6px white;
+  transition: 0.5s;
+}
+
+.project-form-btn:hover,
+.project-form-addMember-btn:hover {
+  box-shadow: none;
+}
+
+.project-name {
+  top: 0;
+  left: 0;
+}
+
+.picker {
+  grid-column: 5/10;
+  grid-row: 2/4;
+  background: cornflowerblue;
+}
+
+.issue {
+  margin-top: 5%;
+  margin-left: 30%;
+  position: relative;
+  height: 700px;
+  width: 700px;
+  border-radius: 20px;
+  padding: 40px;
+  box-sizing: border-box;
+  background: #ecf0f3;
+  box-shadow: 14px 14px 20px #cdced1, -14px -14px 20px white;
+}
+.issue-form {
+  margin-top: 5%;
+  margin-left: 30%;
+  position: relative;
+  height: 300px;
+  width: 300px;
+  border-radius: 20px;
+  padding: 40px;
+  box-sizing: border-box;
+  background: #ecf0f3;
+  box-shadow: 14px 14px 20px #cdced1, -14px -14px 20px white;
+}
+
+.edit-btn {
+  margin: 5px;
+  background: #7fcbd7;
+}
+
+.remove-btn {
+  margin: 5px;
+  background: #f69898;
 }

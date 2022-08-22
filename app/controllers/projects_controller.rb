@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: %i[ show update destroy ]
-  skip_before_action :authorized_user, only: [:index, :show, :create]
+  skip_before_action :authorized_user, only: [:index, :show, :create, :destroy]
   
   # GET /projects
   def index
@@ -23,7 +23,7 @@ class ProjectsController < ApplicationController
 
   # PATCH/PUT /projects/1
   def update
-    if @project.update(project_params)
+    if @project.update!(project_params)
       render json: @project
     else
       render json: @project.errors, status: :unprocessable_entity

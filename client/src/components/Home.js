@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
   const navigate = useNavigate();
+  const myMesh = useRef();
+
   function handleLogin() {
     navigate("/login");
   }
@@ -12,10 +14,15 @@ function Home() {
   }
   return (
     <div>
-      <h1>Preview Display</h1>
-      <div>3D</div>
-      <button onClick={handleLogin}>Login</button>
-      <button onClick={handleSignup}>Create Account</button>
+      <h1>Hi</h1>
+      <div className="home-btn">
+        <button className="project-btn" onClick={handleLogin}>
+          Login
+        </button>
+        <button className="project-btn" onClick={handleSignup}>
+          Create Account
+        </button>
+      </div>
     </div>
   );
 }

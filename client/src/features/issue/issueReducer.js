@@ -1,4 +1,4 @@
-export function createIssue({ issue_details, resolved, task_id }) {
+export function createIssue({ issue_details, resolved, task_id, issue_date }) {
   return function (dispatch) {
     dispatch({ type: "issues/createIssue/pending" });
     fetch("/issues", {
@@ -11,6 +11,7 @@ export function createIssue({ issue_details, resolved, task_id }) {
         issue_details,
         resolved,
         task_id,
+        issue_date,
       }),
     })
       .then((res) => res.json())

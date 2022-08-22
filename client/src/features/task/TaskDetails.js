@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { selectedTask } from "./taskReducer";
+import { addDate } from "../issue/dateReducer";
 
 function TaskList({ task }) {
   const navigate = useNavigate();
@@ -18,7 +19,11 @@ function TaskList({ task }) {
     Math.abs(new Date(end_date) - new Date(start_date)) / (1000 * 60 * 60 * 24)
   );
 
-  const handleClick = () => {
+  const handleClick = (e) => {
+    const currentDate = dayjs(e.target.attributes.value.nodeValue).format(
+      "YYYY-MM-DD"
+    );
+    dispatch(addDate(currentDate));
     dispatch(selectedTask(task));
     navigate("/issue_form");
   };
@@ -29,7 +34,12 @@ function TaskList({ task }) {
     taskDays.push(dayjs(taskStartDate).add(i, "day").format("MM/DD/YY"));
   }
   const taskList = taskDays.map((day) => (
-    <td key={Math.random()} className="table-block" onClick={handleClick}>
+    <td
+      key={Math.random()}
+      className="table-block"
+      value={day}
+      onClick={handleClick}
+    >
       {dayjs(day).format("DD")}
     </td>
   ));

@@ -1,18 +1,22 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { addTask, createTask, getTasks } from "./taskReducer";
-import { useNavigate, Navigate } from "react-router-dom";
+import { createProject } from "./projectReducer";
+import MemberForm from "./MemberForm";
+import MemberList from "../issue/MemberList";
+import { addMembers } from "./memberReducer";
+import { useDispatch, useSelector } from "react-redux";
+import ProjectReport from "./ProjectReport";
+import { addProject } from "./projectReducer";
+import { useNavigate } from "react-router-dom";
 
-function TaskForm() {
-  const { handleSubmit, register, control } = useForm();
+function ProjectForm({ currentUser }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { handleSubmit, register, control } = useForm();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [complete, setComplete] = useState(false);
-  const navigate = useNavigate();
+  // const [updatedProject, setUpdatedProject] = useState([]);
 
   const currentProject = useSelector((state) => state.projects.payload);
   console.log(currentProject);
@@ -20,52 +24,49 @@ function TaskForm() {
   const onSubmit = (e) => {
     const sendingData = {
       name: e.name,
-      category: e.category,
-      completion: complete,
+      description: e.description,
       start_date: startDate,
       end_date: endDate,
-      project_id: currentProject.id,
     };
-    console.log(sendingData);
-    dispatch(createTask(sendingData));
-    navigate("/project_page");
+    fetch(`/projects/${currentProject.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(sendingData),
+    })
+      .then((res) => res.json())
+      .then((data) => dispatch(addProject(data)));
+    navigate("/project_report");
   };
 
   return (
     <div className="project">
       <form className="project-form" onSubmit={handleSubmit(onSubmit)}>
-        <h1>TASK</h1>
+        <h1 className="project-name">NEW PROJECT</h1>
         <div>
           <label className="project-form-label">Name</label>
           <input
             className="project-form-input"
             type="text"
-            placeholder="Project Name"
+            placeholder={currentProject.name}
             {...register("name")}
           />
-          <label className="project-form-label">Category</label>
+          <label className="project-form-label">Description</label>
           <input
             className="project-form-input"
             type="text"
-            placeholder="Project category"
-            {...register("category")}
+            placeholder={currentProject.description}
+            {...register("description")}
           />
-          <label className="project-form-label">Completion</label>
-          <input
-            className="project-form-checkbox"
-            type="checkbox"
-            name="completion"
-            onClick={() => setComplete(!complete)}
-            style={{ cursor: "pointer" }}
-          />
-          <br />
+          <label className="project-form-label">Start Date</label>
           <Controller
             name="Start Date"
             control={control}
             render={({ field }) => (
               <DatePicker
                 className="project-form-dayPicker"
-                placeholderText="Select Start Date"
+                placeholderText={currentProject.start_date}
                 selected={field.value}
                 selectsStart
                 format="MM/dd/yyyy"
@@ -77,13 +78,14 @@ function TaskForm() {
               />
             )}
           />
+          <label className="project-form-label">End Date</label>
           <Controller
             name="End Date"
             control={control}
             render={({ field }) => (
               <DatePicker
                 className="project-form-dayPicker"
-                placeholderText="Select End Date"
+                placeholderText={currentProject.end_date}
                 selected={field.value}
                 selectsEnd
                 format="MM/dd/yyyy"
@@ -96,12 +98,13 @@ function TaskForm() {
             )}
           />
           <button className="project-form-btn" type="submit">
-            Submit
+            Edit
           </button>
         </div>
       </form>
+      {/* {updatedProject ? <ProjectReport updatedProject={updatedProject}/> : null } */}
     </div>
   );
 }
 
-export default TaskForm;
+export default ProjectForm;

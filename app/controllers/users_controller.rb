@@ -7,12 +7,11 @@ class UsersController < ApplicationController
     @users = User.all
 
     render json: @users
-
   end
 
   # GET /api/users/1
   def show
-    render json: current_user, status: :ok, serializer: UserWithProjectsSerializer
+    render json: current_user, status: :ok
   end
 
   # POST /api/users

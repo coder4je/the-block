@@ -1,10 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ProjectList from "../features/project/ProjectList";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { authUser } from "../features/auth/userSlice";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import { addProject } from "../features/project/projectReducer";
 
 function Welcome({ currentUser }) {
+  const [getNewProjects, setGetNewProjects] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -17,24 +23,30 @@ function Welcome({ currentUser }) {
 
   const projects = useSelector((state) => state.user.payload.projects);
 
+  function setUpdated(e) {
+    setGetNewProjects(e);
+    dispatch(addProject(e));
+  }
+
   return (
-    <div>
+    <div className="welcome-container">
       {currentUser ? (
-        <div>
-          <h1>My Page</h1>
-          <h2>Welcome {currentUser.username}</h2>
-          <h3>My Info:</h3>
-          <ul>
-            <img src={currentUser.picture} alt="my profile picture" />
-            <li>Email: {currentUser.email}</li>
-            <li>Phone Number: {currentUser.phone_number}</li>
-          </ul>
-        </div>
+        <Card sx={{ maxWidth: 345 }} className="member-container">
+          <CardMedia component="img" height="200" image={currentUser.picture} />
+          <CardContent>
+            <h2>{currentUser.username}</h2>
+          </CardContent>
+        </Card>
       ) : null}
-      <button onClick={handleCreateProject}>Create Project</button>
+      <br />
+      <button className="project-btn" onClick={handleCreateProject}>
+        Create Project
+      </button>
       <div className="projects">
-        <h1>Project List</h1>
-        {projects ? <ProjectList projects={projects} /> : null}
+        <h1>PROJECTS</h1>
+        {projects ? (
+          <ProjectList projects={projects} setUpdated={setUpdated} />
+        ) : null}
       </div>
     </div>
   );

@@ -2,6 +2,8 @@ import React from "react";
 import IssueDetails from "./IssueDetails";
 
 function IssueList({ issues, taskId }) {
+  console.log(issues);
+
   const issueList = issues.map((issue) => {
     return <IssueDetails key={issue.id} issue={issue} taskID={taskId} />;
   });

@@ -1,7 +1,5 @@
 class IssueSerializer < ActiveModel::Serializer
-  attributes :id, :issue_details, :resolved, :task_id
+  attributes :id, :issue_details, :resolved, :task_id, :issue_date
 
-  belongs_to :task
-  has_many :user_issues
 
 end

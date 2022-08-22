@@ -9,6 +9,7 @@ function ProjectPage() {
   const [openTaskForm, setOpenTaskForm] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [showDate, setShowDate] = useState(false);
 
   const currentProject = useSelector((state) => state.projects.payload);
 
@@ -48,7 +49,7 @@ function ProjectPage() {
   // console.log(dayjs(startDate).format("MMM"));
 
   const handleClick = () => {
-    navigate("/issue_form");
+    setShowDate(!showDate);
   };
 
   // Create Blocks
@@ -58,7 +59,12 @@ function ProjectPage() {
   }
   const listItems = days.map((day) => (
     // console.log(dayjs(day).format("DD"))
-    <td key={Math.random()} className="table-block" onClick={handleClick}>
+    <td
+      key={Math.random()}
+      className="table-block"
+      style={showDate ? { color: "black" } : { color: "#7fcbd7" }}
+      onClick={handleClick}
+    >
       {dayjs(day).format("DD")}
     </td>
   ));
@@ -96,7 +102,7 @@ function ProjectPage() {
             {monthList}
           </tr>
           <tr>
-            <th c>Task</th>
+            <th>TASK</th>
             {listItems}
           </tr>
           {currentTask ? (
@@ -105,9 +111,13 @@ function ProjectPage() {
               currentTask={currentTask}
             />
           ) : null}
+          <tr>
+            <th>
+              <button onClick={handleCreateTask}>+</button>
+            </th>
+          </tr>
         </tbody>
       </table>
-      <button onClick={handleCreateTask}>+</button>
     </>
   );
 }

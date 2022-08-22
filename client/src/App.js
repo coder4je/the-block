@@ -14,6 +14,8 @@ import IssueForm from "./features/issue/IssueForm";
 import ProjectReport from "./features/project/ProjectReport";
 import MemberList from "./features/issue/MemberList";
 import MemberDetails from "./features/issue/MemberDetails";
+import ProjectEditForm from "./features/project/ProjectEditForm";
+import { Canvas } from "@react-three/fiber";
 
 function App() {
   const dispatch = useDispatch();
@@ -37,14 +39,22 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login currentUser={currentUser} />} />
-        <Route path="/project" element={<ProjectForm />} />
+        <Route
+          path="/project"
+          element={<ProjectForm currentUser={currentUser} />}
+        />
+        <Route path="/project_edit" element={<ProjectEditForm />} />
+
         <Route path="/project_page" element={<ProjectPage />} />
         <Route path="/task_form" element={<TaskForm />} />
         <Route
           path="/issue_form"
           element={<IssueForm currentUser={currentUser} />}
         />
-        <Route path="/project_report" element={<ProjectReport />} />
+        <Route
+          path="/project_report"
+          element={<ProjectReport currentUser={currentUser} />}
+        />
 
         <Route
           path="/welcome"

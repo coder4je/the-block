@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "./userSlice";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCube } from "@fortawesome/free-solid-svg-icons";
 
 function Login({ currentUser }) {
   const navigate = useNavigate();
@@ -27,11 +29,16 @@ function Login({ currentUser }) {
 
   return (
     <div className="login">
+      <div className="logo">
+        <FontAwesomeIcon icon={faCube} />
+      </div>
       <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
-        <h1>Login Here</h1>
-        <label className="login-label">Email</label>
+        <h1 className="login-name">CUBE</h1>
+        <label className="login-label">EMAIL</label>
+
         <input
-          placeholder="Email"
+          className="login-input"
+          placeholder="Enter Email"
           {...register(
             "email",
             {
@@ -41,14 +48,20 @@ function Login({ currentUser }) {
           )}
           defaultValue="email"
         />
-        <label className="login-label">Password</label>
+        <label className="login-label">PASSWORD</label>
+
         <input
+          className="login-input"
           placeholder="Password"
           {...register("password", { required: true })}
         />
-        <input type="submit" />
+        <button className="login-btn" type="submit">
+          Login
+        </button>
       </form>
-      <button onClick={handleSignup}>Create Account</button>
+      <button className="signup-btn" onClick={handleSignup}>
+        Create Account
+      </button>
     </div>
   );
 }

@@ -16,7 +16,6 @@ class UserProjectsController < ApplicationController
 
   # POST /user_projects
   def create
-    buybug
     user_project = UserProject.create!(user_project_params)
     render json: user_project, status: :created
   end
@@ -41,8 +40,12 @@ class UserProjectsController < ApplicationController
       @user_project = UserProject.find(params[:id])
     end
 
+    def find_user
+      User.find([params[:email]])
+    end
+
     # Only allow a list of trusted parameters through.
     def user_project_params
-      params.permit(:project_id, :user_id)
+      params.permit(:project_id, :user_id, :member_email)
     end
 end

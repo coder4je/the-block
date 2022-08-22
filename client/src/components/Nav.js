@@ -3,10 +3,17 @@ import { BrowserRouter as Router, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signOutUser } from "../features/auth/userSlice";
 import { set } from "react-hook-form";
+import ReactRoundedImage from "react-rounded-image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHouse,
+  faRightToBracket,
+  faCube,
+  faRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 
 function Nav({ currentUser, updateUser }) {
   const dispatch = useDispatch();
-  // const [authorizerUser, setAuthorizerUser] = useState(false);
 
   const handleLogOut = () => {
     dispatch(signOutUser());
@@ -16,14 +23,14 @@ function Nav({ currentUser, updateUser }) {
   return (
     <div className="nav">
       <li className="nav-item">
-        <Link to={"/about"} className="nav-about" style={{ color: "white  " }}>
-          About
+        <Link to={"/"} className="nav-logo" style={{ color: "white  " }}>
+          <FontAwesomeIcon icon={faCube} />
         </Link>
       </li>
       {!currentUser ? (
         <li className="nav-item">
           <Link to={"/"} className="nav-home" style={{ color: "white  " }}>
-            Home
+            <FontAwesomeIcon icon={faHouse} />
           </Link>
         </li>
       ) : (
@@ -33,7 +40,12 @@ function Nav({ currentUser, updateUser }) {
             className="nav-my-account"
             style={{ color: "white  " }}
           >
-            My Page
+            <ReactRoundedImage
+              image={currentUser.picture}
+              roundedSize="0"
+              imageWidth="40"
+              imageHeight="40"
+            />
           </Link>
         </li>
       )}
@@ -41,16 +53,16 @@ function Nav({ currentUser, updateUser }) {
         <li className="nav-item">
           <Link
             to={"/login"}
-            className="nav-about"
+            className="nav-login"
             style={{ color: "white  " }}
           >
-            Login
+            <FontAwesomeIcon icon={faRightToBracket} />
           </Link>
         </li>
       ) : (
         <li className="nav-item" onClick={handleLogOut}>
           <Link to={"/"} className="nav-about" style={{ color: "white  " }}>
-            Logout
+            <FontAwesomeIcon icon={faRightFromBracket} />
           </Link>
         </li>
       )}
