@@ -10,15 +10,16 @@ import ProjectReport from "./ProjectReport";
 import { addProject } from "./projectReducer";
 import { useNavigate } from "react-router-dom";
 
-function ProjectForm({ currentUser }) {
+function ProjectForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { handleSubmit, register, control } = useForm();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  // const [updatedProject, setUpdatedProject] = useState([]);
+  const [updatedProject, setUpdatedProject] = useState([]);
 
   const currentProject = useSelector((state) => state.projects.payload);
+
   console.log(currentProject);
 
   const onSubmit = (e) => {
@@ -43,7 +44,7 @@ function ProjectForm({ currentUser }) {
   return (
     <div className="project">
       <form className="project-form" onSubmit={handleSubmit(onSubmit)}>
-        <h1 className="project-name">NEW PROJECT</h1>
+        <h1 className="project-name">EDIT PROJECT</h1>
         <div>
           <label className="project-form-label">Name</label>
           <input

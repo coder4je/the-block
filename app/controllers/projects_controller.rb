@@ -4,9 +4,9 @@ class ProjectsController < ApplicationController
   
   # GET /projects
   def index
-    @projects = Project.all
-
-    render json: @projects 
+    user = User.find(session[:user_id])
+    user_projects = user.projects.uniq
+    render json: user_projects
   end
 
   # GET /projects/1
@@ -32,13 +32,22 @@ class ProjectsController < ApplicationController
 
   # DELETE /projects/1
   def destroy
+    if find_user_project
     @project.destroy
+    find_user_project.destroy
+    else
+      @project.destroy
+    end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_project
       @project = Project.find(params[:id])
+    end
+
+    def find_user_project
+      UserProject.find_by(project_id: params[:project_id])
     end
 
 

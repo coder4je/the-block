@@ -8,7 +8,7 @@ import IssueList from "./IssueList";
 import MemberList from "./MemberList";
 import { useNavigate } from "react-router-dom";
 
-function IssueForm() {
+function IssueForm({ currentUser }) {
   const { handleSubmit, register } = useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -17,84 +17,67 @@ function IssueForm() {
   const [issues, setIssues] = useState([]);
   const [resolved, setResolved] = useState(false);
   const [allMembers, setAllMembers] = useState([]);
+  const [currentEmail, setCurrentEmail] = useState([]);
+
   const now = dayjs();
   const today = dayjs(now).format("MM/DD/YY");
 
   const currentProject = useSelector((state) => state.projects.payload);
   const currentTask = useSelector((state) => state.tasks.payload);
-  const currentDate = useSelector((state) => state.date);
+  const currentDate = useSelector((state) =>
+    dayjs(state.date).format("MM/DD/YY")
+  );
   const taskId = currentTask.id;
   const projectId = currentProject.id;
-  console.log(currentDate);
+
   console.log(taskId);
-  console.log(projectId);
-  console.log(issues);
-
-  //Get all members
-  // const allMembers = [];
-
-  // const allMembers = members.filter((item, index) => {
-  //   return members.indexOf(item) === index;
-  // });
-
-  // useEffect(() => {
-  //   fetch(`/projects/${projectId}`)
-  //     .then((res) => res.json())
-  //     .then((data) => setAllMembers(data.users));
-  // }, []);
-
-  // useEffect(() => {
-  //   fetch(`/user_projects`)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       const filtered = data.filter((item) => item.project_id === projectId);
-  //       console.log(filtered);
-  //     });
-  // }, []);
+  console.log(currentDate);
 
   useEffect(() => {
-    fetch("/users")
+    fetch("/user_projects")
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        console.log(
-          data
-            .filter((item) => item.projects)
-            .filter((project) => console.log(project.id))
-        );
-      });
+      .then((data) =>
+        setCurrentEmail(
+          data.filter(
+            (user) =>
+              user.member_email !== null &&
+              user.project_id === currentProject.id &&
+              user.user_id === currentUser.id
+          )
+        )
+      );
   }, []);
-  console.log(allMembers);
-  // const newMembers = [...new Set(allMembers.map((item) => item))];
-  // console.log(newMembers);
 
   // get Issues
   useEffect(() => {
     fetch(`/issues`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setIssues(
           data.filter(
-            (item) => item.task_id === taskId && item.issue_date === currentDate
+            (item) =>
+              item.task_id === taskId &&
+              item.issue_date === dayjs(currentDate).format("YYYY-MM-DD")
           )
         );
       });
-  }, [refresh]);
+  }, [show]);
 
   const onSubmit = (e) => {
+    const sendingData = {
+      issue_details: e.issue_details,
+      resolved: resolved,
+      task_id: taskId,
+      issue_date: dayjs(currentDate).format("YYYY-MM-DD"),
+    };
+    console.log(sendingData);
     fetch("/issues", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        issue_details: e.issue_details,
-        resolved: resolved,
-        task_id: taskId,
-        issue_date: dayjs(currentDate).format("YYYY-MM-DD"),
-      }),
+      body: JSON.stringify(sendingData),
     })
       .then((res) => res.json())
       .then((data) => dispatch(addIssue(data)));
@@ -112,16 +95,38 @@ function IssueForm() {
   }
 
   return (
-    <div className="issue">
-      <h1>{currentProject.name}</h1>
-      <h2>{currentTask.name}</h2>
-      <h3>Today: {today}</h3>
+    <div>
+      <header className="header-container">
+        <button
+          className="header-btn"
+          style={{ width: 150 }}
+          onClick={handleClick}
+        >
+          Project Scheduler
+        </button>
+        <div className="project-info">
+          <div className="project-name">{currentProject.name}</div>
+          <div>{currentProject.description}</div>
+        </div>
+      </header>
+
       <div>
-        Members
-        <div>{allMembers ? <MemberList allMembers={allMembers} /> : null}</div>
+        <h2>{currentTask.name}</h2>
+        <div></div>
+        <div>Today: {today}</div>
+        <h4>Issue Date: {currentDate}</h4>
+      </div>
+      <br />
+      <div>
+        <h2>Members</h2>
+        <div>
+          {currentEmail ? <MemberList allMembers={currentEmail} /> : null}
+        </div>
       </div>
       <h3>Issues</h3>
-      <button onClick={handleAddIssue}>+</button>
+      <button onClick={handleAddIssue} style={{ backgroundColor: "#5eb6ec" }}>
+        +
+      </button>
       {show ? (
         <form className="issue-form" onSubmit={handleSubmit(onSubmit)}>
           <div>
@@ -146,10 +151,9 @@ function IssueForm() {
           </div>
         </form>
       ) : null}
-      {issues ? <IssueList issues={issues} taskID={taskId} /> : null}
-      <button className="project-btn" onClick={handleClick}>
-        Back To Project Scheduler
-      </button>
+      {issues ? (
+        <IssueList issues={issues} refresh={refresh} setRefresh={setRefresh} />
+      ) : null}
     </div>
   );
 }

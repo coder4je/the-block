@@ -15,30 +15,49 @@ import ProjectReport from "./features/project/ProjectReport";
 import MemberList from "./features/issue/MemberList";
 import MemberDetails from "./features/issue/MemberDetails";
 import ProjectEditForm from "./features/project/ProjectEditForm";
-import { Canvas } from "@react-three/fiber";
+import ProjectDetails from "./features/project/ProjectDetails";
+import MemberForm from "./features/project/MemberForm";
+import TaskEditForm from "./features/task/TaskEditForm";
+import { addProject, createProject } from "./features/project/projectReducer";
 
 function App() {
+  const [currentUser, setCurrentUser] = useState(null);
+  const [currentProject, setCurrentProject] = useState([]);
   const dispatch = useDispatch();
-  const [currentUser, setCurrentUser] = useState([]);
   console.log(currentUser);
 
-  const loggedInUser = useSelector((state) => state.user.payload);
+  useEffect(() => {
+    dispatch(addProject(currentProject));
+  }, currentProject);
 
   useEffect(() => {
-    setCurrentUser(loggedInUser);
-  }, [loggedInUser]);
+    fetch("/api/authorized_user").then((r) => {
+      if (r.ok) {
+        r.json().then((user) => setCurrentUser(user));
+      }
+    });
+  }, []);
 
   function updateUser(input) {
     setCurrentUser(input);
   }
-
   return (
     <div className="app">
       <Nav currentUser={currentUser} updateUser={updateUser} />
       <Routes>
         <Route exact path="/" element={<Home />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login currentUser={currentUser} />} />
+        <Route
+          path="/signup"
+          element={
+            <Signup currentUser={currentUser} setCurrentUser={setCurrentUser} />
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Login currentUser={currentUser} setCurrentUser={setCurrentUser} />
+          }
+        />
         <Route
           path="/project"
           element={<ProjectForm currentUser={currentUser} />}
@@ -46,14 +65,26 @@ function App() {
         <Route path="/project_edit" element={<ProjectEditForm />} />
 
         <Route path="/project_page" element={<ProjectPage />} />
+        <Route path="/project_details" element={<ProjectDetails />} />
         <Route path="/task_form" element={<TaskForm />} />
+        <Route path="/task_edit_form" element={<TaskEditForm />} />
         <Route
           path="/issue_form"
-          element={<IssueForm currentUser={currentUser} />}
+          element={
+            <IssueForm
+              currentUser={currentUser}
+              currentProject={currentProject}
+            />
+          }
         />
         <Route
           path="/project_report"
-          element={<ProjectReport currentUser={currentUser} />}
+          element={
+            <ProjectReport
+              currentUser={currentUser}
+              setCurrentProject={setCurrentProject}
+            />
+          }
         />
 
         <Route
@@ -61,7 +92,11 @@ function App() {
           element={<Welcome currentUser={currentUser} />}
         />
         <Route path="/member_list" element={<MemberList />} />
-        <Route path="/member_details" element={<MemberDetails />} />
+        <Route path="/member_form" element={<MemberForm />} />
+        <Route
+          path="/member_details"
+          element={<MemberDetails setCurrentProject={setCurrentProject} />}
+        />
       </Routes>
     </div>
   );

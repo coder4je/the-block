@@ -1,23 +1,28 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "./userSlice";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCube } from "@fortawesome/free-solid-svg-icons";
 
-function Login({ currentUser }) {
+function Login({ currentUser, setCurrentUser }) {
   const navigate = useNavigate();
   const { handleSubmit, register } = useForm();
-  const dispatch = useDispatch();
 
-  const onSubmit = (data) => {
-    dispatch(loginUser(data));
+  const onSubmit = (e) => {
+    const sendingData = {
+      email: e.email,
+      password: e.password,
+    };
+    fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(sendingData),
+    })
+      .then((r) => r.json())
+      .then((user) => setCurrentUser(user));
   };
-
-  const response = useSelector((state) => state.user.payload);
-  console.log(response);
-  console.log(currentUser);
 
   if (currentUser) {
     navigate("/welcome");

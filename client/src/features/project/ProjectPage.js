@@ -10,12 +10,17 @@ function ProjectPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showDate, setShowDate] = useState(false);
+  const [currentTask, setCurrentTask] = useState([]);
 
   const currentProject = useSelector((state) => state.projects.payload);
 
   const { name, description, start_date, end_date } = currentProject;
   const startDate = new Date(start_date);
   const endDate = new Date(end_date);
+  const now = dayjs();
+  const today = dayjs(now).format("MM/DD/YY");
+
+  console.log(currentProject.id);
 
   const duration = Math.floor(
     Math.abs(endDate - startDate) / (1000 * 60 * 60 * 24)
@@ -44,10 +49,6 @@ function ProjectPage() {
     </td>
   ));
 
-  // console.log(dayjs(startDate).add(1, "day").format("DD"));
-  // console.log(dayjs(startDate).format("dddd"));
-  // console.log(dayjs(startDate).format("MMM"));
-
   const handleClick = () => {
     setShowDate(!showDate);
   };
@@ -57,11 +58,19 @@ function ProjectPage() {
   for (let i = 0; i < duration; i++) {
     days.push(dayjs(startDate).add(i, "day").format("MM/DD/YY"));
   }
-  const listItems = days.map((day) => (
+
+  const upToday = Math.floor(
+    Math.abs(new Date(today) - new Date(currentProject.start_date)) /
+      (1000 * 60 * 60 * 24)
+  );
+
+  console.log(upToday);
+
+  const listItems = days.map((day, index) => (
     // console.log(dayjs(day).format("DD"))
     <td
       key={Math.random()}
-      className="table-block"
+      className={index === upToday ? "table-block-today" : "table-block"}
       style={showDate ? { color: "black" } : { color: "#7fcbd7" }}
       onClick={handleClick}
     >
@@ -71,26 +80,39 @@ function ProjectPage() {
 
   // TASKS
 
-  useEffect(() => {
-    dispatch(getTasks());
-  }, [dispatch]);
-
-  const currentTask = useSelector((state) => {
-    if (state.tasks.payload.length <= 1) {
-      return setOpenTaskForm(!openTaskForm);
-    } else {
-      return state.tasks.payload;
-    }
-  });
-
   function handleCreateTask() {
     navigate("/task_form");
   }
 
+  useEffect(() => {
+    fetch("/tasks")
+      .then((res) => res.json())
+      .then((data) => {
+        setCurrentTask(
+          data.filter((task) => task.project_id === currentProject.id)
+        );
+      });
+  }, []);
+
+  function handleMoveToReport() {
+    navigate("/project_report");
+  }
+
   return (
     <>
-      <h1>Project: {name}</h1>
-      <h3>Description: {description}</h3>
+      <header className="header-container">
+        <button
+          className="header-btn"
+          style={{ width: 150 }}
+          onClick={handleMoveToReport}
+        >
+          Project Report
+        </button>
+        <div className="project-info">
+          <div className="project-name">{name}</div>
+          <div>{description}</div>
+        </div>
+      </header>
       <table>
         <tbody>
           <tr>

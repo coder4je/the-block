@@ -6,20 +6,32 @@ import { signupUser } from "./userSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCube } from "@fortawesome/free-solid-svg-icons";
 
-function Signup() {
+function Signup({ currentUser, setCurrentUser }) {
   const dispatch = useDispatch();
   const navigate = useNavigate(true);
   const newUser = useSelector((state) => state.user.payload);
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = (data) => {
-    dispatch(signupUser(data));
+  const onSubmit = (e) => {
+    const sendingData = {
+      username: e.username,
+      email: e.email,
+      password: e.password,
+      phone_number: e.phone_number,
+      picture: e.picture,
+    };
+    fetch("/api/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(sendingData),
+    })
+      .then((r) => r.json())
+      .then((user) => setCurrentUser(user));
   };
 
-  const response = useSelector((state) => state.user.payload);
-  console.log(response);
-
-  if (response) {
+  if (currentUser) {
     navigate("/welcome");
   }
 

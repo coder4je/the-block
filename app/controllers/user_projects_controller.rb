@@ -4,9 +4,8 @@ class UserProjectsController < ApplicationController
 
   # GET /user_projects
   def index
-    @user_projects = UserProject.all
-
-    render json: @user_projects
+    user_projects = UserProject.all
+    render json: user_projects, status: :ok
   end
 
   # GET /user_projects/1

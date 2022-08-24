@@ -16,6 +16,8 @@ function TaskForm() {
 
   const currentProject = useSelector((state) => state.projects.payload);
   console.log(currentProject);
+  const currentTask = useSelector((state) => state.tasks.payload);
+  console.log(currentTask);
 
   const onSubmit = (e) => {
     const sendingData = {
@@ -26,43 +28,53 @@ function TaskForm() {
       end_date: endDate,
       project_id: currentProject.id,
     };
-    fetch("/tasks", {
-      method: "POST",
+    fetch(`/tasks/${currentTask.id}`, {
+      method: "PATCH",
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(sendingData),
     })
       .then((res) => res.json())
-      .then((data) => {
-        dispatch(addTask(data));
-      });
-    console.log(sendingData);
+      .then((data) => dispatch(addTask(data)));
     navigate("/project_page");
+  };
+
+  const handleDelete = (e) => {
+    e.stopPropagation();
+    fetch(`/tasks/${currentTask.id}`, {
+      method: "DELETE",
+    }).then((r) => {
+      if (r.ok) {
+        console.log("Deleted");
+        dispatch(addTask(null));
+        navigate("/project_page");
+      }
+    });
   };
 
   return (
     <div className="project">
       <form className="project-form" onSubmit={handleSubmit(onSubmit)}>
-        <h1>TASK</h1>
+        <h1>EDIT TASK</h1>
         <div>
           <label className="project-form-label">Name</label>
           <input
             className="project-form-input"
             type="text"
-            placeholder="Project Name"
+            placeholder={currentTask ? currentTask.name : null}
             {...register("name")}
           />
           <label className="project-form-label">Category</label>
           <input
             className="project-form-input"
             type="text"
-            placeholder="Project category"
+            placeholder={currentTask ? currentTask.category : null}
             {...register("category")}
           />
           <label className="project-form-label">Completion</label>
           <input
+            placeholder={currentTask ? currentTask.completion : null}
             className="project-form-checkbox"
             type="checkbox"
             name="completion"
@@ -76,7 +88,7 @@ function TaskForm() {
             render={({ field }) => (
               <DatePicker
                 className="project-form-dayPicker"
-                placeholderText="Select Start Date"
+                placeholderText={currentTask ? currentTask.start_date : null}
                 selected={field.value}
                 selectsStart
                 format="MM/dd/yyyy"
@@ -94,7 +106,7 @@ function TaskForm() {
             render={({ field }) => (
               <DatePicker
                 className="project-form-dayPicker"
-                placeholderText="Select End Date"
+                placeholderText={currentTask ? currentTask.end_date : null}
                 selected={field.value}
                 selectsEnd
                 format="MM/dd/yyyy"
@@ -111,6 +123,14 @@ function TaskForm() {
           </button>
         </div>
       </form>
+      <button
+        onClick={handleDelete}
+        className="project-form-btn"
+        style={{ backgroundColor: "gray" }}
+        type="submit"
+      >
+        Delete
+      </button>
     </div>
   );
 }

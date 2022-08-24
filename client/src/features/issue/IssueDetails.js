@@ -1,23 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { getIssues } from "./issueReducer";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { addIssue } from "./issueReducer";
+import { useDispatch } from "react-redux";
+import dayjs from "dayjs";
 
-function IssueDetails({ issue, taskId }) {
-  // const [members, setMembers] = useState([]);
-  // const dispatch = useDispatch();
-  // const currentIssue = useSelector((state) => state.issues.payload);
-  // const issueId = currentIssue.id;
+function IssueDetails({ issue, refresh, setRefresh }) {
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   fetch(`/issues/${issueId}`)
-  //     .then((res) => res.json())
-  //     .then((data) => console.log(data));
-  // }, []);
+  const handleRemove = (e) => {
+    e.stopPropagation();
+    fetch(`/issues/${issue.id}`, {
+      method: "DELETE",
+    }).then((r) => {
+      if (r.ok) {
+        setRefresh(!refresh);
+        dispatch(addIssue(null));
+      }
+    });
+  };
 
   console.log(issue);
 
   const { issue_details } = issue;
-  return <div className="issue-details">{issue_details}</div>;
+  return (
+    <div className="project-card">
+      {issue_details}
+      <button onClick={handleRemove}>X</button>
+    </div>
+  );
 }
 
 export default IssueDetails;

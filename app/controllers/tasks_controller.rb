@@ -10,7 +10,7 @@ class TasksController < ApplicationController
     else
       tasks = Task.all
     end
-    render json: tasks, include: :project
+    render json: tasks
   end
 
   # GET /tasks/1

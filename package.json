@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@ramonak/react-progress-bar": "^5.0.2",
     "bcrypt": "^5.0.1",
     "react-hot-toast": "^2.3.0",
     "react-rounded-image": "^2.0.14"

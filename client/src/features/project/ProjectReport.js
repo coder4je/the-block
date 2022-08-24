@@ -1,46 +1,121 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getTasks } from "../task/taskReducer";
 import { createMember } from "../project/memberReducer";
 import ProgressBar from "@ramonak/react-progress-bar";
+import "reactjs-popup/dist/index.css";
+import dayjs from "dayjs";
+import MemberForm from "./MemberForm";
+import MemberList from "../issue/MemberList";
 
 function ProjectReport({ currentUser }) {
+  const [showForm, setShowForm] = useState(false);
+  const [update, setUpdate] = useState([]);
+  const [currentEmail, setCurrentEmail] = useState([]);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const now = dayjs();
 
-  const currentProject = useSelector((state) => state.projects.payload);
   const currentMembers = useSelector((state) => state.member);
+  const currentProject = useSelector((state) => state.projects.payload);
 
-  console.log(currentProject);
-  console.log(currentMembers);
-  console.log(currentUser);
+  const projectDuration = Math.floor(
+    Math.abs(
+      new Date(currentProject.end_date) - new Date(currentProject.start_date)
+    ) /
+      (1000 * 60 * 60 * 24)
+  );
+  const today = dayjs(now).format("YYYY-MM-DD");
 
-  useEffect(() => {
-    dispatch(getTasks());
-  }, [dispatch]);
+  const projectProgress = Math.floor(
+    Math.abs(new Date(today) - new Date(currentProject.start_date)) /
+      (1000 * 60 * 60 * 24)
+  );
 
   function handleClick() {
-    dispatch(
-      createMember({
-        project_id: currentProject.id,
-        user_id: currentUser.id,
-        member_email: currentMembers,
-      })
-    );
     navigate("/project_page");
   }
 
+  // Get Emails
+
+  useEffect(() => {
+    fetch("/user_projects")
+      .then((res) => res.json())
+      .then((data) =>
+        setCurrentEmail(
+          data.filter(
+            (user) =>
+              user.member_email !== null &&
+              user.project_id === currentProject.id &&
+              user.user_id === currentUser.id
+          )
+        )
+      );
+  }, [showForm]);
+
+  useEffect(() => {
+    fetch("/user_projects")
+      .then((res) => res.json())
+      .then((data) =>
+        setCurrentEmail(
+          data.filter(
+            (user) =>
+              user.member_email !== null &&
+              user.project_id === currentProject.id &&
+              user.user_id === currentUser.id
+          )
+        )
+      );
+  }, [update]);
+
+  function handleAddMember(e) {
+    setShowForm(!showForm);
+  }
+
   return (
-    <div>
-      {currentProject ? (
-        <div>
-          <h1>Project: {currentProject.name}</h1>
-          <h3>Description: {currentProject.description}</h3>
+    <div className="report">
+      <header className="header-container">
+        <button
+          className="header-btn"
+          style={{ width: 150 }}
+          onClick={handleClick}
+        >
+          Project Scheduler
+        </button>
+        <div className="project-info">
+          <div className="project-name">{currentProject.name}</div>
+          <div>{currentProject.description}</div>
         </div>
-      ) : null}
-      <ProgressBar completed={60} />
-      <button onClick={handleClick}>Back To Project Scheduler</button>
+      </header>
+      <div className="report-container">
+        <div className="report-item">
+          <h3>Progress</h3>
+          <ProgressBar completed={projectProgress} />
+        </div>
+      </div>
+
+      <div className="member-form-container">
+        <button className="project-btn" onClick={handleAddMember}>
+          Add Member
+        </button>
+        {showForm ? (
+          <MemberForm
+            currentUser={currentUser}
+            currentProject={currentProject}
+            setShowForm={setShowForm}
+            showForm={showForm}
+          />
+        ) : null}
+      </div>
+      <div className="team-member">
+        <MemberList
+          allMembers={currentEmail}
+          currentUser={currentUser}
+          update={update}
+          setUpdate={setUpdate}
+        />
+      </div>
     </div>
   );
 }
