@@ -28,9 +28,9 @@ function App() {
   console.log(currentUser);
   console.log(currentProject);
 
-  useEffect(() => {
-    dispatch(addProject(currentProject));
-  }, currentProject);
+  // useEffect(() => {
+  //   dispatch(addProject(currentProject));
+  // }, currentProject);
 
   useEffect(() => {
     fetch("/api/authorized_user").then((r) => {

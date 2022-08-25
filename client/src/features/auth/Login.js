@@ -6,7 +6,7 @@ import { faCube } from "@fortawesome/free-solid-svg-icons";
 
 function Login({ currentUser, setCurrentUser }) {
   const navigate = useNavigate();
-  const { handleSubmit, register } = useForm();
+  const { handleSubmit, register, reset } = useForm();
 
   const onSubmit = (e) => {
     const sendingData = {
@@ -19,9 +19,14 @@ function Login({ currentUser, setCurrentUser }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(sendingData),
-    })
-      .then((r) => r.json())
-      .then((user) => setCurrentUser(user));
+    }).then((r) => {
+      if (r.ok) {
+        r.json().then((user) => setCurrentUser(user));
+      } else {
+        navigate("/");
+      }
+    });
+    reset(sendingData);
   };
 
   if (currentUser) {
@@ -51,7 +56,6 @@ function Login({ currentUser, setCurrentUser }) {
             },
             { required: true }
           )}
-          defaultValue="email"
         />
         <label className="login-label">PASSWORD</label>
 

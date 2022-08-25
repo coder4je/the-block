@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -10,7 +10,19 @@ function Signup({ currentUser, setCurrentUser }) {
   const dispatch = useDispatch();
   const navigate = useNavigate(true);
   const newUser = useSelector((state) => state.user.payload);
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
+  const [userProjectId, setUserProjectId] = useState([]);
+
+  useEffect(() => {
+    fetch("/user_projects")
+      .then((res) => res.json())
+      .then((data) => {
+        setUserProjectId(
+          data.filter((item) => item.member_email === currentUser.email)
+        );
+        console.log(data);
+      });
+  }, [currentUser]);
 
   const onSubmit = (e) => {
     const sendingData = {
@@ -29,6 +41,24 @@ function Signup({ currentUser, setCurrentUser }) {
     })
       .then((r) => r.json())
       .then((user) => setCurrentUser(user));
+    reset();
+
+    const data = {
+      user_id: currentUser.id,
+    };
+    console.log(data);
+    fetch(`/user_projects/${userProjectId.id}`, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
   };
 
   if (currentUser) {
@@ -51,10 +81,10 @@ function Signup({ currentUser, setCurrentUser }) {
         <label className="login-label">Email</label>
         <input
           className="login-input"
+          placeholder="Enter Email"
           {...register("email", {
             pattern: /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/i,
           })}
-          defaultValue="email"
         />
         <label className="login-label">Password</label>
         <input

@@ -31,6 +31,9 @@ function Welcome({ currentUser }) {
       });
   }, [updated]);
 
+  useEffect(() => {
+    setUpdated(true);
+  }, []);
   function handleEdit() {
     console.log("hi");
   }

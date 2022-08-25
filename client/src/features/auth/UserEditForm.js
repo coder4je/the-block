@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
-import { signupUser } from "./userSlice";
+import { signOutUser } from "./userSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCube } from "@fortawesome/free-solid-svg-icons";
 
@@ -20,6 +20,7 @@ function UserEditForm({ currentUser, setCurrentUser }) {
       phone_number: e.phone_number,
       picture: e.picture,
     };
+    console.log(sendingData);
     fetch(`/users/${currentUser.id}`, {
       method: "PATCH",
       headers: {
@@ -29,6 +30,19 @@ function UserEditForm({ currentUser, setCurrentUser }) {
     })
       .then((r) => r.json())
       .then((user) => setCurrentUser(user));
+  };
+
+  const handleDelete = (e) => {
+    e.stopPropagation();
+    fetch(`/users/${currentUser.id}`, {
+      method: "DELETE",
+    }).then((r) => {
+      if (r.ok) {
+        console.log("Deleted");
+        dispatch(signOutUser());
+        navigate("/");
+      }
+    });
   };
 
   if (currentUser) {
@@ -53,9 +67,6 @@ function UserEditForm({ currentUser, setCurrentUser }) {
           readOnly
           className="login-input"
           placeholder={currentUser.email}
-          // {...register("email", {
-          //   pattern: /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/i,
-          // })}
         />
         <label className="login-label">Password</label>
         <input
@@ -63,7 +74,6 @@ function UserEditForm({ currentUser, setCurrentUser }) {
           className="login-input"
           placeholder={currentUser.password}
           type="password"
-          // {...register("password", { required: true })}
         />
         <label className="login-label">Phone Number</label>
         <input
@@ -82,6 +92,14 @@ function UserEditForm({ currentUser, setCurrentUser }) {
           Edit Profile
         </button>
       </form>
+      <button
+        onClick={handleDelete}
+        className="project-form-btn"
+        style={{ backgroundColor: "gray" }}
+        type="submit"
+      >
+        Delete
+      </button>
     </div>
   );
 }
