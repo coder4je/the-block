@@ -27,7 +27,7 @@ puts("Seed starts")
     email: Faker::Internet.email,
     password: Faker::Code.nric,
     phone_number: Faker::PhoneNumber.cell_phone,
-    picture: Faker::LoremFlickr.image,
+    picture: Faker::Avatar.image,
   )
 end
 

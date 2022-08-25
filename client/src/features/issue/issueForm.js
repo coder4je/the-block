@@ -123,10 +123,16 @@ function IssueForm({ currentUser }) {
           {currentEmail ? <MemberList allMembers={currentEmail} /> : null}
         </div>
       </div>
-      <h3>Issues</h3>
-      <button onClick={handleAddIssue} style={{ backgroundColor: "#5eb6ec" }}>
-        +
-      </button>
+      <div className="issue-container">
+        <h3>Issues</h3>
+        <button
+          className="project-form-btn"
+          onClick={handleAddIssue}
+          style={{ width: 100 }}
+        >
+          Add Issue
+        </button>
+      </div>
       {show ? (
         <form className="issue-form" onSubmit={handleSubmit(onSubmit)}>
           <div>

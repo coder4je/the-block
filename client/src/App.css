@@ -220,6 +220,13 @@ code {
 .report {
   /* position: relative; */
 }
+
+.issue-container {
+  justify-content: center;
+  width: 100px;
+  margin-left: 45%;
+}
+
 .report-container {
   margin: 10px;
   justify-content: center;
@@ -462,6 +469,11 @@ code {
   background: #f39595;
   border-radius: 3px;
 }
+.remove-issue-btn {
+  margin: 30px;
+  background: #f39595;
+  border-radius: 3px;
+}
 
 .show {
   display: block;
@@ -589,7 +601,7 @@ code {
 .header-container {
   display: flex;
   justify-content: start;
-  width: 300px;
+  width: 600px;
   margin: 3%;
 }
 .project-info {

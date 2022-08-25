@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { addProject, createProject } from "./projectReducer";
+import { addProject } from "./projectReducer";
 import { useNavigate } from "react-router-dom";
-import MemberForm from "./MemberForm";
-import MemberList from "../issue/MemberList";
-import { addMembers } from "./memberReducer";
 
 function ProjectForm({ currentUser, setCurrentProject }) {
   const { handleSubmit, register, control } = useForm();
@@ -15,10 +12,8 @@ function ProjectForm({ currentUser, setCurrentProject }) {
   const navigate = useNavigate();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [allUsers, setAllUsers] = useState([]);
 
   const onSubmit = (e) => {
-    e.stopPropagation();
     const sendingData = {
       name: e.name,
       description: e.description,
@@ -38,7 +33,7 @@ function ProjectForm({ currentUser, setCurrentProject }) {
         setCurrentProject(data);
         dispatch(addProject(data));
       });
-    navigate("/project_report");
+    navigate("/welcome");
   };
 
   return (

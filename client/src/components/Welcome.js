@@ -3,6 +3,8 @@ import ProjectList from "../features/project/ProjectList";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ReactRoundedImage from "react-rounded-image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 function Welcome({ currentUser }) {
   const [updated, setUpdated] = useState(false);
@@ -29,10 +31,21 @@ function Welcome({ currentUser }) {
       });
   }, [updated]);
 
+  function handleEdit() {
+    console.log("hi");
+  }
+
+  function handleRemove() {
+    console.log("hi");
+  }
+  function handleProfileEdit() {
+    navigate("/user_edit_form");
+  }
+
   return (
     <div className="welcome-container">
       {currentUser ? (
-        <div className="member-profile">
+        <div className="member-profile" onClick={handleProfileEdit}>
           {currentUser.picture ? (
             <ReactRoundedImage
               image={currentUser.picture}
@@ -51,6 +64,7 @@ function Welcome({ currentUser }) {
           <div className="member-profile-item">{currentUser.username}</div>
         </div>
       ) : null}
+
       <br />
       <button className="project-btn" onClick={handleCreateProject}>
         Create Project

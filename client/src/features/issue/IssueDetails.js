@@ -24,7 +24,9 @@ function IssueDetails({ issue, refresh, setRefresh }) {
   return (
     <div className="project-card">
       {issue_details}
-      <button onClick={handleRemove}>X</button>
+      <button className="remove-issue-btn" onClick={handleRemove}>
+        X
+      </button>
     </div>
   );
 }

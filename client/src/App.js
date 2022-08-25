@@ -18,6 +18,7 @@ import ProjectEditForm from "./features/project/ProjectEditForm";
 import ProjectDetails from "./features/project/ProjectDetails";
 import MemberForm from "./features/project/MemberForm";
 import TaskEditForm from "./features/task/TaskEditForm";
+import UserEditForm from "./features/auth/UserEditForm";
 import { addProject, createProject } from "./features/project/projectReducer";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
   const [currentProject, setCurrentProject] = useState([]);
   const dispatch = useDispatch();
   console.log(currentUser);
+  console.log(currentProject);
 
   useEffect(() => {
     dispatch(addProject(currentProject));
@@ -59,8 +61,22 @@ function App() {
           }
         />
         <Route
+          path="/user_edit_form"
+          element={
+            <UserEditForm
+              currentUser={currentUser}
+              setCurrentUser={setCurrentUser}
+            />
+          }
+        />
+        <Route
           path="/project"
-          element={<ProjectForm currentUser={currentUser} />}
+          element={
+            <ProjectForm
+              currentUser={currentUser}
+              setCurrentProject={setCurrentProject}
+            />
+          }
         />
         <Route path="/project_edit" element={<ProjectEditForm />} />
 
@@ -82,7 +98,7 @@ function App() {
           element={
             <ProjectReport
               currentUser={currentUser}
-              setCurrentProject={setCurrentProject}
+              currentProject={currentProject}
             />
           }
         />

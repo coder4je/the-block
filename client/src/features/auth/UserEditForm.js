@@ -6,7 +6,7 @@ import { signupUser } from "./userSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCube } from "@fortawesome/free-solid-svg-icons";
 
-function Signup({ currentUser, setCurrentUser }) {
+function UserEditForm({ currentUser, setCurrentUser }) {
   const dispatch = useDispatch();
   const navigate = useNavigate(true);
   const newUser = useSelector((state) => state.user.payload);
@@ -15,13 +15,13 @@ function Signup({ currentUser, setCurrentUser }) {
   const onSubmit = (e) => {
     const sendingData = {
       username: e.username,
-      email: e.email,
-      password: e.password,
+      email: currentUser.email,
+      password: currentUser.password,
       phone_number: e.phone_number,
       picture: e.picture,
     };
-    fetch("/api/signup", {
-      method: "POST",
+    fetch(`/users/${currentUser.id}`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
@@ -50,38 +50,40 @@ function Signup({ currentUser, setCurrentUser }) {
         />
         <label className="login-label">Email</label>
         <input
+          readOnly
           className="login-input"
-          {...register("email", {
-            pattern: /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/i,
-          })}
-          defaultValue="email"
+          placeholder={currentUser.email}
+          // {...register("email", {
+          //   pattern: /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/i,
+          // })}
         />
         <label className="login-label">Password</label>
         <input
+          readOnly
           className="login-input"
-          placeholder="Password"
+          placeholder={currentUser.password}
           type="password"
-          {...register("password", { required: true })}
+          // {...register("password", { required: true })}
         />
         <label className="login-label">Phone Number</label>
         <input
           className="login-input"
-          placeholder="Phone Number"
+          placeholder={currentUser.phone_number}
           {...register("phone_number")}
         />
         <label className="login-label">Picture</label>
         <input
           className="login-input"
-          placeholder="Img URL"
+          placeholder={currentUser.picture}
           name="picture"
           {...register("picture")}
         />
         <button className="login-btn" type="submit">
-          Register
+          Edit Profile
         </button>
       </form>
     </div>
   );
 }
 
-export default Signup;
+export default UserEditForm;

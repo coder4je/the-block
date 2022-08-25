@@ -20,6 +20,8 @@ function ProjectReport({ currentUser }) {
   const currentMembers = useSelector((state) => state.member);
   const currentProject = useSelector((state) => state.projects.payload);
 
+  console.log(currentProject);
+
   const projectDuration = Math.floor(
     Math.abs(
       new Date(currentProject.end_date) - new Date(currentProject.start_date)
@@ -28,6 +30,8 @@ function ProjectReport({ currentUser }) {
   );
   const today = dayjs(now).format("YYYY-MM-DD");
 
+  console.log(today);
+  console.log(currentProject.start_date);
   const projectProgress = Math.floor(
     Math.abs(new Date(today) - new Date(currentProject.start_date)) /
       (1000 * 60 * 60 * 24)

@@ -58,6 +58,7 @@ function Login({ currentUser, setCurrentUser }) {
         <input
           className="login-input"
           placeholder="Password"
+          type="password"
           {...register("password", { required: true })}
         />
         <button className="login-btn" type="submit">
