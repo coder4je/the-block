@@ -1,26 +1,10 @@
-html {
-  margin: none;
-  padding: 0;
-}
-body {
-  font-family: "Dank Mono", ui-monospace, monospace;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  width: 100vw;
-  height: 100vh;
-  background: #ecf0f3;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
-  place-items: center;
-  margin-left: 15%;
-}
-#root {
-  width: 100%;
-  height: 100%;
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  font-family: "Dank Mono", ui-monospace, monospace;
 }
+
 .app {
   width: 100%;
   height: 100%;
@@ -47,7 +31,7 @@ code {
 
 .nav {
   height: 100%;
-  width: 10%;
+  width: 4rem;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -55,7 +39,7 @@ code {
   background-color: #2a2e4c;
   transition: 0.5s ease;
   overflow-x: hidden;
-  padding-top: 20px;
+  padding-top: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -512,9 +496,6 @@ code {
   overflow: hidden;
   width: 100%;
   height: 100%;
-  margin-left: -200px;
-  margin-top: -10px;
-  margin-right: -100px;
   background: rgba(255, 114, 96, 1);
   background: linear-gradient(
     45deg,
@@ -596,12 +577,6 @@ code {
 }
 
 .title {
-  padding-top: 5%;
-  min-block-size: 60px;
-  min-inline-size: 60px;
-  box-sizing: border-box;
-  display: grid;
-  position: relative;
   place-content: center;
   font-family: system-ui;
   font-size: min(50%, 5vmin);

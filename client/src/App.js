@@ -8,7 +8,7 @@ import Welcome from "./components/Welcome";
 import ProjectForm from "./features/project/ProjectForm";
 import Home from "./components/Home";
 import ProjectPage from "./features/project/ProjectPage";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import TaskForm from "./features/task/TaskForm";
 import IssueForm from "./features/issue/IssueForm";
 import ProjectReport from "./features/project/ProjectReport";
@@ -19,7 +19,6 @@ import ProjectDetails from "./features/project/ProjectDetails";
 import MemberForm from "./features/project/MemberForm";
 import TaskEditForm from "./features/task/TaskEditForm";
 import UserEditForm from "./features/auth/UserEditForm";
-import { addProject, createProject } from "./features/project/projectReducer";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -27,10 +26,6 @@ function App() {
   const dispatch = useDispatch();
   console.log(currentUser);
   console.log(currentProject);
-
-  // useEffect(() => {
-  //   dispatch(addProject(currentProject));
-  // }, currentProject);
 
   useEffect(() => {
     fetch("/api/authorized_user").then((r) => {
@@ -44,7 +39,7 @@ function App() {
     setCurrentUser(input);
   }
   return (
-    <div className="app">
+    <>
       <Nav currentUser={currentUser} updateUser={updateUser} />
       <Routes>
         <Route exact path="/" element={<Home />} />
@@ -114,7 +109,7 @@ function App() {
           element={<MemberDetails setCurrentProject={setCurrentProject} />}
         />
       </Routes>
-    </div>
+    </>
   );
 }
 
