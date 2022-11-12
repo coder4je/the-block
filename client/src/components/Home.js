@@ -1,9 +1,13 @@
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+
+const Button = styled.button`
+  background: rgb(103, 226, 144);
+`;
 
 function Home() {
   const navigate = useNavigate();
-  const myMesh = useRef();
 
   function handleLogin() {
     navigate("/login");

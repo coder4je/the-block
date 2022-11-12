@@ -23,7 +23,6 @@ import UserEditForm from "./features/auth/UserEditForm";
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [currentProject, setCurrentProject] = useState([]);
-  const dispatch = useDispatch();
   console.log(currentUser);
   console.log(currentProject);
 
